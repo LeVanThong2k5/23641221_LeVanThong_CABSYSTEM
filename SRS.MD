@@ -1477,4 +1477,2418 @@ stateDiagram-v2
 
     NO_DRIVER_FOUND --> [*]
 
-Bước 7: 
+Bước 7: Busimess requirement phân rã thành các functional requirement phân rã yêu cầu dịch vụ, thiết kế các functional requirement, ví dụ FR1 tìm vị trí của khách hàng, FR2 chọn những thằng tài xế online, FR3 chọn loại xe, ưu tiên chọn những tài xế đánh giá cao, làm theo dạng markdown
+Ở bước này, từ các Business Requirement (BR) đã xác định ở bước 5, BA tiếp tục phân rã thành các Functional Requirement (FR) cụ thể.
+
+BR trả lời: Doanh nghiệp cần hệ thống đáp ứng điều gì?
+FR trả lời: Hệ thống phải thực hiện chức năng gì để đáp ứng BR đó?
+
+Ví dụ:
+
+BR04 – Tự động tìm tài xế
+↓
+FR04.01 – Xác định vị trí khách hàng
+FR04.02 – Lọc tài xế đang Online/Available
+FR04.03 – Lọc tài xế theo loại xe
+FR04.04 – Tính khoảng cách đến khách hàng
+FR04.05 – Ưu tiên tài xế có rating cao
+FR04.06 – Gửi yêu cầu nhận chuyến
+
+1. Functional Requirement cho quy trình đặt chuyến
+Mã FR	Tên Functional Requirement	Diễn giải
+FR01	Xác định vị trí khách hàng	Hệ thống phải cho phép xác định vị trí hiện tại của khách hàng hoặc cho phép khách hàng nhập/chọn điểm đón trên bản đồ.
+FR02	Nhập điểm đến	Hệ thống phải cho phép khách hàng nhập và xác nhận điểm đến của chuyến đi.
+FR03	Chọn loại xe	Hệ thống phải hiển thị các loại xe/dịch vụ đang được hỗ trợ để khách hàng lựa chọn.
+FR04	Tạo yêu cầu đặt chuyến	Hệ thống phải tạo Booking sau khi khách hàng xác nhận điểm đón, điểm đến và loại xe.
+FR05	Kiểm tra thông tin Booking	Hệ thống phải kiểm tra tính hợp lệ của điểm đón, điểm đến và loại xe trước khi tạo Booking.
+FR06	Xác định tài xế Online/Available	Hệ thống phải lọc danh sách tài xế đang ở trạng thái có thể nhận chuyến.
+FR07	Lọc tài xế theo loại xe	Hệ thống chỉ được lựa chọn tài xế có phương tiện phù hợp với loại xe mà khách hàng đã chọn.
+FR08	Xác định khoảng cách tài xế	Hệ thống phải xác định khoảng cách giữa vị trí tài xế và điểm đón của khách hàng.
+FR09	Ưu tiên tài xế gần khách hàng	Hệ thống phải ưu tiên các tài xế có khoảng cách phù hợp/gần điểm đón theo quy tắc vận hành.
+FR10	Ưu tiên tài xế có đánh giá cao	Hệ thống có thể sử dụng rating của tài xế như một tiêu chí ưu tiên khi lựa chọn tài xế.
+FR11	Xếp hạng tài xế phù hợp	Hệ thống phải sắp xếp các tài xế phù hợp theo các tiêu chí được doanh nghiệp cấu hình.
+FR12	Gửi yêu cầu nhận chuyến	Hệ thống phải gửi thông báo yêu cầu nhận chuyến đến tài xế được lựa chọn.
+FR13	Chờ tài xế phản hồi	Hệ thống phải theo dõi thời gian tài xế phản hồi yêu cầu nhận chuyến.
+FR14	Tài xế chấp nhận chuyến	Khi tài xế chấp nhận, hệ thống phải cập nhật tài xế vào Booking và xác nhận chuyến.
+FR15	Tài xế từ chối chuyến	Khi tài xế từ chối, hệ thống phải loại tài xế đó khỏi lượt tìm hiện tại và tiếp tục tìm tài xế khác.
+FR16	Xử lý tài xế không phản hồi	Nếu tài xế không phản hồi trong thời gian quy định, hệ thống phải xem yêu cầu là timeout và tiếp tục tìm tài xế khác.
+FR17	Tìm tài xế tiếp theo	Khi tài xế từ chối hoặc timeout, hệ thống phải lựa chọn tài xế phù hợp tiếp theo mà không yêu cầu khách hàng tạo lại Booking.
+FR18	Thông báo đã tìm được tài xế	Khi có tài xế nhận chuyến, hệ thống phải thông báo cho khách hàng thông tin tài xế.
+FR19	Không tìm được tài xế	Nếu không còn tài xế phù hợp, hệ thống phải thông báo cho khách hàng theo chính sách của doanh nghiệp.
+FR20	Theo dõi trạng thái Booking	Hệ thống phải cập nhật trạng thái Booking trong quá trình tìm và phân công tài xế.
+2. Phân rã FR theo từng Business Requirement
+BR01 – Quản lý khách hàng
+BR01
+│
+├── FR01.01 – Đăng ký tài khoản
+├── FR01.02 – Đăng nhập
+├── FR01.03 – Đăng xuất
+├── FR01.04 – Cập nhật thông tin cá nhân
+├── FR01.05 – Xem thông tin tài khoản
+└── FR01.06 – Xem lịch sử chuyến
+BR02 – Quản lý tài xế
+BR02
+│
+├── FR02.01 – Tạo tài khoản tài xế
+├── FR02.02 – Cập nhật hồ sơ tài xế
+├── FR02.03 – Quản lý thông tin phương tiện
+├── FR02.04 – Chuyển trạng thái Online/Offline
+├── FR02.05 – Chuyển trạng thái Available/Unavailable
+└── FR02.06 – Cập nhật vị trí
+BR03 – Đặt xe
+BR03
+│
+├── FR03.01 – Xác định vị trí khách hàng
+├── FR03.02 – Nhập điểm đón
+├── FR03.03 – Nhập điểm đến
+├── FR03.04 – Chọn loại xe
+├── FR03.05 – Kiểm tra thông tin chuyến
+└── FR03.06 – Tạo Booking
+BR04 – Tự động tìm tài xế
+BR04
+│
+├── FR04.01 – Lấy vị trí khách hàng
+├── FR04.02 – Lấy danh sách Driver Available
+├── FR04.03 – Lọc theo loại xe
+├── FR04.04 – Xác định khoảng cách
+├── FR04.05 – Xác định Driver phù hợp
+├── FR04.06 – Xếp hạng Driver
+└── FR04.07 – Chọn Driver ưu tiên
+BR05 – Phân công tài xế
+BR05
+│
+├── FR05.01 – Gửi yêu cầu cho Driver
+├── FR05.02 – Nhận phản hồi Accept
+├── FR05.03 – Xác nhận Driver
+├── FR05.04 – Gán Driver vào Booking
+└── FR05.05 – Thông báo Customer
+BR06 – Xử lý Driver từ chối/không phản hồi
+BR06
+│
+├── FR06.01 – Nhận Reject
+├── FR06.02 – Theo dõi Timeout
+├── FR06.03 – Loại Driver không phù hợp
+├── FR06.04 – Tìm Driver tiếp theo
+└── FR06.05 – Thông báo khi không còn Driver
+3. Functional Requirement cho Trip
+Mã	Tên	Diễn giải
+FR21	Driver đã đến	Driver có thể cập nhật trạng thái đã đến điểm đón.
+FR22	Đã đón khách	Driver có thể cập nhật trạng thái đã đón khách.
+FR23	Bắt đầu chuyến	Driver có thể chuyển Trip sang trạng thái đang di chuyển.
+FR24	Hoàn thành chuyến	Driver có thể cập nhật Trip là hoàn thành.
+FR25	Hủy chuyến	Hệ thống phải hỗ trợ hủy chuyến theo chính sách đã xác nhận.
+FR26	Theo dõi Trip	Customer có thể xem trạng thái hiện tại của Trip.
+FR27	Hiển thị thông tin Driver	Customer có thể xem thông tin Driver được phân công.
+FR28	Hiển thị ETA	Hệ thống phải cung cấp thời gian dự kiến Driver đến.
+4. Functional Requirement cho Fare & Payment
+Mã	Tên	Diễn giải
+FR29	Tính cước	Hệ thống tính số tiền phải trả dựa trên pricing rule.
+FR30	Hiển thị cước	Customer có thể xem số tiền phải thanh toán.
+FR31	Thanh toán tiền mặt	Hệ thống ghi nhận chuyến được thanh toán bằng tiền mặt.
+FR32	Tạo giao dịch online	Hệ thống tạo yêu cầu thanh toán tới Payment Provider.
+FR33	Nhận kết quả thanh toán	Hệ thống tiếp nhận kết quả thành công/thất bại từ Payment Provider.
+FR34	Xử lý payment failure	Hệ thống thông báo khi thanh toán thất bại và cho phép retry theo policy.
+FR35	Lưu transaction reference	Hệ thống lưu mã tham chiếu giao dịch thay vì lưu dữ liệu nhạy cảm của thẻ/tài khoản.
+5. Functional Requirement cho Notification
+Mã	Tên	Diễn giải
+FR36	Thông báo Booking	Thông báo cho Customer khi Booking được tiếp nhận.
+FR37	Thông báo Driver nhận chuyến	Thông báo cho Customer khi có Driver nhận chuyến.
+FR38	Thông báo Driver mới	Thông báo cho Driver khi có yêu cầu chuyến mới.
+FR39	Thông báo Driver đến	Thông báo cho Customer khi Driver đến điểm đón.
+FR40	Thông báo hoàn thành	Thông báo cho Customer khi Trip hoàn thành.
+FR41	Thông báo Payment	Thông báo kết quả thanh toán cho Customer.
+6. Functional Requirement cho Operation/Admin
+Mã	Tên	Diễn giải
+FR42	Quản lý Customer	Nhân viên có thể xem và quản lý thông tin Customer theo quyền được cấp.
+FR43	Quản lý Driver	Nhân viên có thể xem và quản lý thông tin Driver.
+FR44	Quản lý Vehicle	Nhân viên có thể quản lý thông tin phương tiện.
+FR45	Giám sát Trip	Nhân viên có thể xem các Trip đang diễn ra.
+FR46	Tra cứu giao dịch	Nhân viên có quyền có thể tra cứu lịch sử giao dịch.
+FR47	Xử lý Trip lỗi	Nhân viên có thể hỗ trợ xử lý các Trip gặp vấn đề.
+FR48	Phân quyền	Hệ thống kiểm tra quyền trước khi cho phép thực hiện chức năng quản trị.
+FR49	Audit Log	Hệ thống ghi nhận các thao tác quan trọng của người dùng/quản trị viên.
+FR50	Báo cáo	Hệ thống cung cấp các báo cáo cơ bản về Trip và doanh thu.
+7. Thiết kế Functional Requirement cho chức năng tìm tài xế
+
+Đây là phần nên đặc biệt chú trọng vì liên quan trực tiếp đến BG01 – Tự động tìm tài xế và BG02 – Giảm thời gian tìm tài xế.
+
+flowchart TD
+    A["Customer tạo Booking"] --> B["FR01: Xác định vị trí khách hàng"]
+    B --> C["FR02: Xác định điểm đến"]
+    C --> D["FR03: Xác định loại xe"]
+
+
+    D --> E["FR06: Lấy Driver Online / Available"]
+    E --> F["FR07: Lọc Driver theo loại xe"]
+    F --> G["FR08: Tính khoảng cách"]
+    G --> H["FR10: Xem xét Rating"]
+    H --> I["FR11: Xếp hạng Driver"]
+
+
+    I --> J{"Có Driver phù hợp?"}
+
+
+    J -- "Có" --> K["FR12: Gửi yêu cầu nhận chuyến"]
+    K --> L{"Driver phản hồi?"}
+
+
+    L -- "Accept" --> M["FR14: Gán Driver"]
+    M --> N["FR18: Thông báo Customer"]
+
+
+    L -- "Reject" --> O["FR15: Loại Driver"]
+    O --> E
+
+
+    L -- "Timeout" --> P["FR16: Xử lý Timeout"]
+    P --> E
+
+
+    J -- "Không" --> Q["FR19: Thông báo chưa tìm được Driver"]
+8. Lưu ý về tiêu chí "tài xế đánh giá cao"
+
+Yêu cầu "ưu tiên tài xế đánh giá cao" là một Functional Requirement hợp lý, nhưng BA không nên tự biến nó thành rule cuối cùng nếu khách hàng chưa xác nhận.
+
+Ví dụ cần xác nhận:
+
+Hệ thống có ưu tiên Driver có rating cao hơn Driver gần hơn không?
+
+Có thể xảy ra:
+
+Driver A
+- Khoảng cách: 1 km
+- Rating: 4.2
+
+
+Driver B
+- Khoảng cách: 2 km
+- Rating: 4.9
+
+Nếu chỉ ưu tiên rating → chọn B.
+
+Nếu chỉ ưu tiên khoảng cách → chọn A.
+
+Nếu kết hợp → cần Business Rule, ví dụ:
+
+Driver Score =
+Distance Score
++ Rating Score
++ Availability Score
+
+Công thức và trọng số phải được Business xác nhận, không nên để Developer tự quyết định.
+
+9. Mapping từ Business Goal đến Functional Requirement
+BG01 - Tự động tìm và phân công tài xế
+       ↓
+BR04 - Tự động tìm tài xế
+BR05 - Phân công tài xế
+       ↓
+FR06 - Lọc Driver Available
+FR07 - Lọc loại xe
+FR08 - Tính khoảng cách
+FR10 - Xem xét Rating
+FR11 - Xếp hạng Driver
+FR12 - Gửi Request
+FR14 - Assign Driver
+BG02 - Giảm thời gian tìm tài xế
+       ↓
+BR06 - Xử lý Reject / Timeout
+BR07 - Giảm thời gian tìm Driver
+       ↓
+FR13 - Theo dõi phản hồi
+FR15 - Xử lý Reject
+FR16 - Xử lý Timeout
+FR17 - Tìm Driver tiếp theo
+FR19 - Xử lý không tìm được Driver
+BG03 - Hỗ trợ thanh toán
+       ↓
+BR12 - Cash Payment
+BR13 - Online Payment
+BR14 - Payment Failure
+       ↓
+FR31 - Thanh toán tiền mặt
+FR32 - Tạo giao dịch online
+FR33 - Nhận kết quả Payment
+FR34 - Retry Payment
+Kết quả của Bước 7
+
+Có thể hiểu chuỗi phân tích của dự án hiện tại như sau:
+
+Business Goal (BG)
+↓
+Business Requirement (BR)
+↓
+Functional Requirement (FR)
+↓
+Use Case
+↓
+User Story / Acceptance Criteria
+↓
+Test Case
+
+Bước 8: Thiết kế business rule, và thiết kế Accession, ví dụ xác tài xế sẵn sàng mới được nhận chuyến, quá thời hạn tài xế không chịu access thì sẽ restar qua thằng tài xế tiếp theo, làm theo dạng markdown
+1. Business Rules – Quy tắc nghiệp vụ
+Mã	Business Rule	Diễn giải
+BRL01	Driver phải sẵn sàng	Chỉ tài xế ở trạng thái Available/Ready mới được hệ thống đưa vào danh sách tìm tài xế.
+BRL02	Driver phải phù hợp loại xe	Tài xế được chọn phải có phương tiện phù hợp với loại xe khách hàng yêu cầu.
+BRL03	Driver phải có vị trí hợp lệ	Hệ thống chỉ xem xét tài xế có thông tin vị trí hợp lệ và còn trong khoảng thời gian cập nhật cho phép.
+BRL04	Ưu tiên Driver phù hợp	Hệ thống ưu tiên tài xế dựa trên các tiêu chí nghiệp vụ như khoảng cách, trạng thái, loại xe và rating.
+BRL05	Driver chỉ nhận một chuyến	Một tài xế không được đồng thời nhận hai chuyến đang ở trạng thái cần thực hiện.
+BRL06	Driver phải phản hồi trong thời gian quy định	Sau khi nhận yêu cầu, tài xế phải Accept hoặc Reject trong thời gian do doanh nghiệp quy định.
+BRL07	Timeout Driver	Nếu tài xế không phản hồi trước thời hạn, hệ thống phải xem yêu cầu là Timeout.
+BRL08	Chuyển sang Driver tiếp theo	Khi Driver Reject hoặc Timeout, hệ thống phải tìm Driver phù hợp tiếp theo.
+BRL09	Không yêu cầu Customer đặt lại	Khi Driver Reject/Timeout, Booking hiện tại tiếp tục được sử dụng; Customer không cần tạo Booking mới.
+BRL10	Không có Driver	Nếu không còn Driver phù hợp, hệ thống phải thông báo cho Customer theo chính sách của doanh nghiệp.
+BRL11	Xác nhận Driver	Chỉ khi Driver Accept thành công và hệ thống xác nhận việc phân công thì Booking mới chuyển sang trạng thái Driver Assigned.
+BRL12	Cập nhật trạng thái Driver	Sau khi nhận chuyến, Driver phải chuyển sang trạng thái không nhận chuyến mới cho đến khi hoàn thành hoặc kết thúc chuyến.
+BRL13	Không được gán trùng Driver	Một Booking chỉ được có một Driver chính thức tại cùng một thời điểm.
+BRL14	Hủy Booking	Customer/Driver chỉ được hủy Booking ở những trạng thái được Business Policy cho phép.
+BRL15	Tính cước	Fare được tính dựa trên Pricing Rule đã được doanh nghiệp xác nhận.
+BRL16	Payment	Booking phải được ghi nhận trạng thái thanh toán phù hợp sau khi Trip hoàn thành.
+BRL17	Không lưu dữ liệu thanh toán nhạy cảm	CAB không được lưu trực tiếp thông tin nhạy cảm của thẻ/tài khoản thanh toán.
+BRL18	Rating	Customer chỉ được đánh giá Driver sau khi Trip đã hoàn thành.
+BRL19	Quyền quản trị	Nhân viên chỉ được thực hiện các thao tác phù hợp với Role/Permission được cấp.
+BRL20	Audit	Các thao tác quan trọng phải được lưu vết để phục vụ kiểm tra và truy xuất sự cố.
+2. Business Rule quan trọng nhất – Driver Dispatch
+
+Quy trình tìm Driver có thể thiết kế theo rule:
+
+Customer tạo Booking
+        ↓
+Tìm Driver
+        ↓
+Driver có Available?
+   ┌────┴────┐
+   Không     Có
+    ↓         ↓
+Bỏ qua     Kiểm tra
+Driver     loại xe
+              ↓
+        Kiểm tra vị trí
+              ↓
+        Xếp hạng Driver
+              ↓
+        Gửi Request
+              ↓
+        Chờ phản hồi
+         /         \
+    Accept       Reject/Timeout
+       ↓              ↓
+  Assign Driver   Driver tiếp theo
+3. Quy tắc Timeout
+
+Đây là rule cần khách hàng xác nhận rõ.
+
+Ví dụ:
+
+BRL06: Driver phải phản hồi trong thời gian X giây.
+
+Nếu:
+
+Request sent
+      ↓
+  X giây
+      ↓
+Không có response
+      ↓
+TIMEOUT
+      ↓
+Tìm Driver tiếp theo
+
+Lưu ý: Giá trị X chưa nên tự đặt. Đây là một Business Rule cần xác nhận với khách hàng.
+
+4. Exception / Alternative Flow
+EF01 – Driver không sẵn sàng
+
+Điều kiện: Driver đang Offline hoặc Unavailable.
+
+Xử lý:
+
+Hệ thống tìm Driver
+        ↓
+Driver không Available
+        ↓
+Không gửi Booking
+        ↓
+Bỏ qua Driver
+        ↓
+Tìm Driver tiếp theo
+EF02 – Driver từ chối chuyến
+
+Điều kiện: Driver nhấn Reject.
+
+Gửi Booking cho Driver A
+        ↓
+Driver A Reject
+        ↓
+Cập nhật Request = REJECTED
+        ↓
+Không gán Driver A
+        ↓
+Tìm Driver B
+
+Customer không cần tạo lại Booking.
+
+EF03 – Driver không phản hồi
+
+Điều kiện: Driver không Accept/Reject trong thời gian quy định.
+
+Gửi Booking cho Driver A
+        ↓
+     Timeout
+        ↓
+Request = TIMEOUT
+        ↓
+Loại Driver A khỏi lượt tìm
+        ↓
+Tìm Driver B
+EF04 – Driver mất kết nối
+
+Điều kiện: Driver đang được đề xuất nhưng mất kết nối.
+
+Driver A đang được request
+        ↓
+Mất kết nối
+        ↓
+Không nhận được response
+        ↓
+Hết thời gian timeout
+        ↓
+TIMEOUT
+        ↓
+Tìm Driver khác
+EF05 – Không còn Driver phù hợp
+Tìm Driver
+    ↓
+Không còn Driver phù hợp
+    ↓
+Kiểm tra thời gian tìm kiếm
+    ↓
+ ┌──────────────┴──────────────┐
+ Còn thời gian              Hết thời gian
+    ↓                            ↓
+Tiếp tục tìm                Kết thúc tìm
+                                 ↓
+                      Thông báo Customer
+
+Thông báo có thể ở mức nghiệp vụ:
+
+"Hiện tại chưa tìm được tài xế phù hợp. Vui lòng thử lại sau."
+
+Nội dung chính thức cần được Business xác nhận.
+
+5. Exception – Customer hủy trong khi đang tìm Driver
+flowchart TD
+    A["Booking đang SEARCHING_DRIVER"] --> B{"Customer hủy?"}
+
+
+    B -- "Không" --> C["Tiếp tục tìm Driver"]
+
+
+    B -- "Có" --> D{"Có Driver đã được assign?"}
+
+
+    D -- "Không" --> E["Hủy Booking"]
+    E --> F["Dừng quá trình tìm Driver"]
+
+
+    D -- "Có" --> G["Kiểm tra Cancellation Policy"]
+    G --> H["Xử lý phí hủy nếu có"]
+    H --> I["Hủy Booking"]
+6. Exception – Hai tài xế cùng Accept
+
+Đây là một trường hợp kỹ thuật/nghiệp vụ rất quan trọng.
+
+Ví dụ:
+
+Booking 001
+     ↓
+Driver A ── Accept ──┐
+                     ├──> Hệ thống xử lý
+Driver B ── Accept ──┘
+
+Business Rule:
+
+Chỉ một Driver được xác nhận chính thức cho một Booking.
+
+Hệ thống phải đảm bảo:
+
+First valid Accept
+       ↓
+Assign Driver
+       ↓
+Các Accept sau
+       ↓
+Reject / Ignore
+
+Không được để một Booking có đồng thời Driver A và Driver B.
+
+7. Exception – Driver Accept nhưng không còn Available
+
+Ví dụ:
+
+Driver A
+Available
+   ↓
+Booking request
+   ↓
+Driver A Accept
+   ↓
+Kiểm tra lại trạng thái
+   ↓
+Driver A không còn Available
+   ↓
+Không assign
+   ↓
+Tìm Driver khác
+
+Đây là trường hợp cần xử lý để tránh race condition khi có nhiều Booking.
+
+8. Exception – Payment thất bại
+flowchart TD
+    A["Trip Completed"] --> B["Tính Fare"]
+    B --> C["Customer chọn Online Payment"]
+    C --> D["Gửi Payment Provider"]
+    D --> E{"Payment thành công?"}
+
+
+    E -- "Có" --> F["Payment = SUCCESS"]
+    F --> G["Thông báo Customer"]
+
+
+    E -- "Không" --> H["Payment = FAILED"]
+    H --> I["Thông báo Customer"]
+    I --> J{"Cho phép Retry?"}
+
+
+    J -- "Có" --> C
+    J -- "Không" --> K["Xử lý theo Payment Policy"]
+9. Exception – Notification thất bại
+
+Notification không nên làm Booking bị thất bại.
+
+Trip/Booking Event
+       ↓
+Notification Service
+       ↓
+   Gửi Notification
+       ↓
+   ┌────┴────┐
+ Success    Failed
+   ↓          ↓
+Hoàn thành   Retry / Log
+             ↓
+        Không làm Booking
+        bị thất bại
+
+Business Rule:
+
+BRL21: Lỗi Notification không được làm gián đoạn quá trình Booking/Trip.
+
+10. Tổng hợp Business Rule cho chức năng tìm tài xế
+
+Có thể đưa vào tài liệu BA dưới dạng bảng ngắn gọn:
+
+Mã	Rule	Khi nào áp dụng	Kết quả
+BRL01	Driver phải Available	Khi tìm Driver	Chỉ chọn Driver Available
+BRL02	Đúng loại xe	Khi lọc Driver	Loại Driver không phù hợp
+BRL03	Có vị trí hợp lệ	Khi tính khoảng cách	Chỉ dùng location hợp lệ
+BRL04	Ưu tiên Driver phù hợp	Khi ranking	Xác định thứ tự Driver
+BRL06	Có thời gian phản hồi	Sau khi gửi request	Chờ Accept/Reject
+BRL07	Timeout	Driver không phản hồi	Request = Timeout
+BRL08	Reject/Timeout → Driver tiếp theo	Khi request thất bại	Tiếp tục dispatch
+BRL09	Không tạo Booking mới	Driver Reject/Timeout	Giữ nguyên Booking
+BRL10	Không có Driver	Hết danh sách/timeout	Thông báo Customer
+BRL11	Chỉ một Driver được assign	Driver Accept	Xác nhận Driver đầu tiên hợp lệ
+11. Những Business Rule cần xác nhận với khách hàng
+
+Một số rule chưa nên chốt cứng vì đề bài chưa cung cấp giá trị cụ thể:
+
+Nội dung cần xác nhận	Câu hỏi
+Driver Timeout	Tài xế có bao nhiêu giây để Accept/Reject?
+Search Timeout	Hệ thống tìm tài xế tối đa bao lâu?
+Ranking	Khoảng cách hay Rating có mức ưu tiên cao hơn?
+Rating	Rating tối thiểu bao nhiêu? Có dùng rating làm tiêu chí bắt buộc không?
+Location	Vị trí Driver được coi là hợp lệ trong bao lâu?
+Reject	Driver reject có bị ảnh hưởng về sau không?
+Cancellation	Khi nào Customer/Driver được hủy?
+Cancellation Fee	Có phí hủy không và tính như thế nào?
+No-show	Customer không xuất hiện thì xử lý ra sao?
+Payment Retry	Thanh toán thất bại được retry bao nhiêu lần?
+
+Bước 9: Xây dựng Data modeling dựa vào đó xây dựng các cái thực thể và mô hình erd, dùng code mermaid
+1. Xác định các Entity chính
+
+Có thể chia thành các nhóm:
+
+Nhóm người dùng
+Customer
+Driver
+Staff
+Role
+Nhóm phương tiện
+Vehicle
+VehicleType
+Nhóm đặt xe/chuyến đi
+Booking
+Trip
+DriverAssignment
+Nhóm vị trí
+Location
+DriverLocation
+Nhóm tài chính
+Fare
+Payment
+PaymentMethod
+Nhóm thông báo/đánh giá
+Notification
+Rating
+Nhóm quản trị
+AuditLog
+2. Danh sách Entity và thuộc tính chính
+Entity	Thuộc tính chính	Mục đích
+Customer	customer_id, name, phone, email, status	Quản lý khách hàng
+Driver	driver_id, name, phone, rating, status	Quản lý tài xế
+Staff	staff_id, name, email, status	Nhân viên vận hành
+Role	role_id, role_name	Phân quyền
+Vehicle	vehicle_id, driver_id, vehicle_type_id, plate_number, status	Quản lý phương tiện
+VehicleType	vehicle_type_id, name, description	Loại xe
+Booking	booking_id, customer_id, pickup_location_id, destination_location_id, vehicle_type_id, status, created_at	Yêu cầu đặt xe
+DriverAssignment	assignment_id, booking_id, driver_id, status, requested_at, responded_at	Lưu lịch sử tìm/gán Driver
+Trip	trip_id, booking_id, driver_id, start_time, end_time, status	Chuyến đi thực tế
+Location	location_id, latitude, longitude, address	Điểm đón/điểm đến
+DriverLocation	location_id, driver_id, latitude, longitude, recorded_at	Theo dõi vị trí Driver
+Fare	fare_id, trip_id, base_fare, distance_fee, time_fee, surcharge, total_amount	Tính cước
+Payment	payment_id, trip_id, amount, method, status, transaction_ref	Quản lý thanh toán
+Rating	rating_id, trip_id, customer_id, driver_id, score, comment	Đánh giá Driver
+Notification	notification_id, recipient_id, type, content, status, sent_at	Quản lý thông báo
+AuditLog	audit_id, actor_id, action, entity_type, entity_id, created_at	Lưu vết thao tác
+3. Mô hình quan hệ chính
+
+Có thể hiểu các quan hệ nghiệp vụ chính như sau:
+
+Customer
+   │
+   │ 1:N
+   ↓
+Booking
+   │
+   ├──────────────→ Location
+   │                 Pickup
+   │                 Destination
+   │
+   │ 1:N
+   ↓
+DriverAssignment
+   │
+   ↓
+Driver
+   │
+   ↓
+Vehicle
+   │
+   ↓
+VehicleType
+
+
+Booking
+   │
+   │ 1:1
+   ↓
+Trip
+   │
+   ├──→ Fare
+   ├──→ Payment
+   └──→ Rating
+
+Điểm quan trọng là DriverAssignment nên được tách thành Entity riêng.
+
+Ví dụ một Booking có thể có:
+
+Booking 001
+   ↓
+Driver A → REJECTED
+   ↓
+Driver B → TIMEOUT
+   ↓
+Driver C → ACCEPTED
+
+Nếu chỉ lưu driver_id trực tiếp trong Booking, chúng ta sẽ mất lịch sử A và B.
+
+4. ERD – Mermaid
+
+Dưới đây là ERD đề xuất cho MVP:
+
+erDiagram
+        UUID rating_id PK
+        UUID trip_id FK
+        UUID customer_id FK
+        UUID driver_id FK
+        int score
+        string comment
+        datetime created_at
+    }
+
+
+    NOTIFICATION {
+        UUID notification_id PK
+        UUID customer_id FK
+        UUID driver_id FK
+        string notification_type
+        string content
+        string status
+        datetime sent_at
+        datetime created_at
+    }
+
+
+    AUDIT_LOG {
+        UUID audit_id PK
+        UUID staff_id FK
+        string action
+        string entity_type
+        UUID entity_id
+        string old_value
+        string new_value
+        datetime created_at
+    }
+
+
+    CUSTOMER ||--o{ BOOKING : creates
+
+
+    BOOKING ||--|| LOCATION : pickup
+    BOOKING ||--|| LOCATION : destination
+
+
+    VEHICLE_TYPE ||--o{ VEHICLE : defines
+    DRIVER ||--o{ VEHICLE : owns
+
+
+    BOOKING ||--o{ DRIVER_ASSIGNMENT : has
+    DRIVER ||--o{ DRIVER_ASSIGNMENT : receives
+
+
+    BOOKING ||--o| TRIP : becomes
+    DRIVER ||--o{ TRIP : performs
+
+
+    DRIVER ||--o{ DRIVER_LOCATION : sends
+
+
+    TRIP ||--o| FARE : has
+    TRIP ||--o{ PAYMENT : has
+    TRIP ||--o| RATING : receives
+
+
+    CUSTOMER ||--o{ RATING : gives
+    DRIVER ||--o{ RATING : receives
+
+
+    CUSTOMER ||--o{ NOTIFICATION : receives
+    DRIVER ||--o{ NOTIFICATION : receives
+
+
+    STAFF ||--o{ AUDIT_LOG : creates
+
+
+    ROLE ||--o{ STAFF : assigned
+5. Giải thích các quan hệ quan trọng
+Customer – Booking
+Customer 1 ───── N Booking
+
+Một khách hàng có thể tạo nhiều Booking.
+
+Một Booking chỉ thuộc về một Customer.
+
+Booking – DriverAssignment
+Booking 1 ───── N DriverAssignment
+
+Đây là quan hệ rất quan trọng.
+
+Ví dụ:
+
+Booking B001
+│
+├── Assignment A001 → Driver D001 → REJECTED
+├── Assignment A002 → Driver D002 → TIMEOUT
+└── Assignment A003 → Driver D003 → ACCEPTED
+
+Nhờ đó hệ thống có thể đáp ứng Business Rule:
+
+Driver Reject/Timeout → tìm Driver tiếp theo.
+
+Driver – Vehicle
+Driver 1 ───── N Vehicle
+
+Về mặt nghiệp vụ, nếu ABC quy định mỗi Driver chỉ có một phương tiện đang hoạt động, thì database vẫn có thể lưu lịch sử nhiều Vehicle nhưng chỉ một Vehicle có status = ACTIVE.
+
+Nếu doanh nghiệp xác nhận mỗi Driver chỉ có đúng một xe, có thể thiết kế thành quan hệ 1-1.
+
+Booking – Trip
+Booking 1 ───── 0..1 Trip
+
+Booking được tạo trước.
+
+Chỉ khi Driver được xác nhận thì Trip mới được tạo.
+
+Do đó:
+
+Booking
+   ↓
+Driver Assigned
+   ↓
+Trip
+Trip – Fare
+Trip 1 ───── 0..1 Fare
+
+Một Trip có một kết quả tính cước cuối cùng.
+
+Trip – Payment
+Trip 1 ───── N Payment
+
+Ở đây nên cho phép 1-N thay vì 1-1.
+
+Ví dụ:
+
+Trip T001
+   ↓
+Payment P001 → FAILED
+   ↓
+Payment P002 → FAILED
+   ↓
+Payment P003 → SUCCESS
+
+Điều này hỗ trợ Business Rule retry payment.
+
+6. Driver Location
+
+DriverLocation nên tách khỏi Driver.
+
+Ví dụ:
+
+Driver D001
+│
+├── 10:00 → 10.762622, 106.660172
+├── 10:01 → 10.763100, 106.661000
+├── 10:02 → 10.764000, 106.662100
+└── ...
+
+Như vậy có thể:
+
+tìm Driver gần Customer;
+tính khoảng cách;
+hỗ trợ ETA;
+theo dõi lịch sử vị trí nếu Business yêu cầu.
+
+Tuy nhiên, cần xác nhận thời gian lưu trữ GPS vì dữ liệu này có thể tăng rất nhanh.
+
+7. Một điểm cần điều chỉnh trong ERD
+
+Ở phiên bản thiết kế ban đầu, NOTIFICATION có cả:
+
+customer_id
+driver_id
+
+Điều này phù hợp MVP nhưng về lâu dài có thể không tối ưu.
+
+Có thể thiết kế theo hướng:
+
+NOTIFICATION
+     │
+     ↓
+Recipient
+     │
+ ┌───┴────┐
+Customer  Driver
+
+hoặc sử dụng một User/Account chung:
+
+USER
+├── Customer Profile
+├── Driver Profile
+└── Staff Profile
+
+Cách này phù hợp hơn nếu hệ thống về sau có nhiều loại người dùng.
+
+8. Data Model theo Domain
+
+Có thể chia ERD thành các domain để dễ phát triển và mở rộng:
+
+flowchart TB
+
+
+    subgraph USER["User Management"]
+        C["Customer"]
+        D["Driver"]
+        S["Staff"]
+        R["Role"]
+    end
+
+
+    subgraph FLEET["Fleet Management"]
+        V["Vehicle"]
+        VT["Vehicle Type"]
+    end
+
+
+    subgraph BOOKING["Booking & Dispatch"]
+        B["Booking"]
+        DA["Driver Assignment"]
+        L["Location"]
+        T["Trip"]
+    end
+
+
+    subgraph LOCATION["Location Tracking"]
+        DL["Driver Location"]
+    end
+
+
+    subgraph PAYMENT["Fare & Payment"]
+        F["Fare"]
+        P["Payment"]
+    end
+
+
+    subgraph COMM["Communication"]
+        N["Notification"]
+        RT["Rating"]
+    end
+
+
+    subgraph ADMIN["Administration"]
+        AL["Audit Log"]
+    end
+
+
+    C --> B
+    B --> DA
+    DA --> D
+    B --> T
+    T --> F
+    T --> P
+    T --> RT
+    D --> V
+    V --> VT
+    D --> DL
+    B --> L
+    C --> N
+    D --> N
+    S --> AL
+    R --> S
+9. Các Entity quan trọng nhất đối với MVP
+
+Nếu thời gian chỉ có 7 tuần, không nhất thiết phải triển khai toàn bộ Entity nâng cao ngay từ đầu.
+
+Must Have
+Customer
+Driver
+Vehicle
+VehicleType
+Booking
+DriverAssignment
+Trip
+Location
+DriverLocation
+Fare
+Payment
+Notification
+Nên có
+Rating
+Staff
+Role
+AuditLog
+Có thể Phase 2
+Promotion
+Voucher
+Loyalty
+CorporateAccount
+AdvancedPricing
+DriverIncentive
+Analytics
+10. Kết quả của Bước 9
+
+Data Model của CAB hiện có thể hình thành chuỗi nghiệp vụ chính:
+
+CUSTOMER
+   │
+   ↓
+BOOKING
+   │
+   ├── Pickup / Destination
+   │
+   ↓
+DRIVER ASSIGNMENT
+   │
+   ├── Driver A → Reject
+   ├── Driver B → Timeout
+   └── Driver C → Accept
+              │
+              ↓
+             TRIP
+          ┌────┼────┐
+          ↓    ↓    ↓
+        FARE PAYMENT RATING
+               │
+               ↓
+          NOTIFICATION
+
+Bước 10: xác định các nonfunction requimen xác định những cái chức năng không yêu cầu
+Ở bước này, BA xác định Non-Functional Requirements (NFR) – các yêu cầu không mô tả hệ thống làm chức năng gì, mà mô tả hệ thống phải hoạt động như thế nào.
+
+Ví dụ:
+
+FR: Hệ thống tìm tài xế.
+NFR: Hệ thống phải tìm tài xế trong thời gian đáp ứng cho phép.
+FR: Hệ thống thanh toán online.
+NFR: Thông tin thanh toán phải được bảo mật.
+FR: Hệ thống gửi thông báo.
+NFR: Lỗi Notification không được làm sập chức năng đặt xe.
+1. Danh sách Non-Functional Requirements
+Mã	Nhóm	Non-Functional Requirement	Tiêu chí đề xuất
+NFR01	Performance	Thời gian phản hồi	Các API nghiệp vụ thông thường nên phản hồi trong ≤ 2 giây ở điều kiện tải bình thường.
+NFR02	Performance	Tìm tài xế	Hệ thống phải bắt đầu quá trình tìm tài xế ngay sau khi Booking được xác nhận.
+NFR03	Performance	Cập nhật trạng thái	Thay đổi trạng thái Booking/Trip phải được phản ánh gần thời gian thực.
+NFR04	Scalability	Khả năng mở rộng	Hệ thống phải có khả năng mở rộng khi số lượng Customer, Driver và Booking tăng.
+NFR05	Availability	Tính sẵn sàng	Hệ thống đặt xe phải hoạt động ổn định, đặc biệt trong thời gian cao điểm.
+NFR06	Reliability	Độ tin cậy	Lỗi của một component không được làm toàn bộ hệ thống CAB ngừng hoạt động.
+NFR07	Fault Tolerance	Chịu lỗi	Nếu Notification hoặc Payment gặp lỗi, chức năng Booking vẫn phải tiếp tục hoạt động theo policy.
+NFR08	Security	Authentication	Customer, Driver và Staff phải được xác thực trước khi sử dụng các chức năng yêu cầu tài khoản.
+NFR09	Security	Authorization	Hệ thống phải kiểm soát quyền truy cập dựa trên Role/Permission.
+NFR10	Security	Bảo vệ dữ liệu cá nhân	Thông tin cá nhân phải được bảo vệ khỏi truy cập trái phép.
+NFR11	Security	Bảo vệ dữ liệu vị trí	Dữ liệu GPS của Driver phải được bảo vệ và chỉ sử dụng cho mục đích được phép.
+NFR12	Security	Payment Security	CAB không lưu trực tiếp dữ liệu nhạy cảm của thẻ/tài khoản thanh toán.
+NFR13	Auditability	Audit Log	Các thao tác quan trọng phải được ghi log để phục vụ truy vết.
+NFR14	Maintainability	Dễ bảo trì	Hệ thống phải được thiết kế để có thể sửa đổi một module mà hạn chế ảnh hưởng module khác.
+NFR15	Extensibility	Khả năng mở rộng	Có thể thêm loại xe/dịch vụ mới mà không phải xây dựng lại toàn bộ hệ thống.
+NFR16	Extensibility	Payment Provider	Có thể tích hợp thêm Payment Provider mới.
+NFR17	Extensibility	Notification Provider	Có thể bổ sung thêm Email/SMS/Push hoặc provider khác.
+NFR18	Compatibility	Integration	Hệ thống phải có khả năng tích hợp với các hệ thống bên ngoài thông qua API.
+NFR19	Data Integrity	Tính toàn vẹn dữ liệu	Một Booking không được đồng thời được assign cho nhiều Driver.
+NFR20	Data Integrity	Transaction	Các thao tác cập nhật dữ liệu quan trọng phải đảm bảo tính nhất quán.
+NFR21	Availability	Không phụ thuộc Payment	Payment Provider gặp sự cố không được làm toàn bộ Booking System ngừng hoạt động.
+NFR22	Availability	Không phụ thuộc Notification	Notification Service gặp sự cố không được làm Trip bị mất dữ liệu hoặc dừng xử lý.
+NFR23	Recovery	Backup	Dữ liệu quan trọng phải được backup theo chính sách doanh nghiệp.
+NFR24	Recovery	Disaster Recovery	Hệ thống phải có khả năng khôi phục dịch vụ khi xảy ra sự cố nghiêm trọng.
+NFR25	Monitoring	Monitoring	Hệ thống phải giám sát tình trạng các service quan trọng.
+NFR26	Monitoring	Alerting	Hệ thống phải cảnh báo khi xảy ra lỗi hoặc vượt ngưỡng vận hành.
+NFR27	Usability	Dễ sử dụng	Giao diện Customer/Driver phải đơn giản, dễ hiểu và phù hợp với quy trình đặt xe.
+NFR28	Usability	Admin UI	Giao diện vận hành phải hỗ trợ nhân viên nhanh chóng tra cứu và xử lý Trip.
+NFR29	Localization	Ngôn ngữ	Hệ thống phải hỗ trợ tiếng Việt trong phiên bản triển khai cho khách hàng Việt Nam.
+NFR30	Deployment	Triển khai độc lập	Các component có thể triển khai/cập nhật độc lập để hạn chế ảnh hưởng đến hệ thống đang chạy.
+2. NFR về Performance
+
+Đây là nhóm đặc biệt quan trọng đối với CAB vì hệ thống có chức năng tìm tài xế theo vị trí.
+
+NFR01 – API Response Time
+
+Các thao tác API thông thường phải có thời gian phản hồi trong giới hạn được doanh nghiệp xác nhận, ví dụ ≤ 2 giây ở điều kiện tải bình thường.
+
+NFR02 – Driver Dispatch
+
+Sau khi Customer xác nhận Booking:
+
+Customer
+   ↓
+Create Booking
+   ↓
+System xác nhận
+   ↓
+Start Driver Search
+
+Quá trình tìm Driver phải được khởi động ngay sau khi Booking hợp lệ, không phụ thuộc vào việc Customer phải refresh màn hình.
+
+NFR03 – Real-time Status
+
+Các trạng thái quan trọng như:
+
+SEARCHING
+DRIVER_ASSIGNED
+DRIVER_ARRIVING
+DRIVER_ARRIVED
+IN_PROGRESS
+COMPLETED
+CANCELLED
+
+phải được cập nhật cho các bên liên quan với độ trễ phù hợp.
+
+Giá trị cụ thể, ví dụ ≤ 3 giây, cần được khách hàng xác nhận.
+
+3. NFR về Scalability
+
+CAB được kỳ vọng phục vụ số lượng lớn Customer và Driver.
+
+Hệ thống cần có khả năng:
+
+100 Drivers
+     ↓
+1,000 Drivers
+     ↓
+10,000 Drivers
+     ↓
+100,000+ Drivers
+
+mà không phải thiết kế lại toàn bộ hệ thống.
+
+Các component như:
+
+Booking
+Driver Dispatch
+Notification
+Payment
+Location
+
+nên có khả năng scale độc lập khi cần.
+
+4. NFR về Reliability & Fault Tolerance
+
+Đây là yêu cầu rất quan trọng từ đề bài.
+
+Nguyên tắc
+
+Một module lỗi không được kéo theo toàn bộ hệ thống lỗi.
+
+Ví dụ:
+
+flowchart LR
+    A["Customer"] --> B["Booking Service"]
+
+
+    B --> C["Dispatch Service"]
+    B --> D["Notification Service"]
+    B --> E["Payment Service"]
+
+
+    D -. "Lỗi" .-> F["Booking vẫn hoạt động"]
+    E -. "Lỗi" .-> G["Trip vẫn được xử lý"]
+
+Ví dụ:
+
+Notification Service chết:
+
+Booking
+   ↓
+Driver Assigned
+   ↓
+Notification FAILED
+   ↓
+Log + Retry
+   ↓
+Booking vẫn tồn tại
+
+Không được:
+
+Notification lỗi
+       ↓
+Toàn bộ CAB DOWN ❌
+5. NFR về Security
+
+Hệ thống phải bảo vệ:
+
+Thông tin Customer.
+Thông tin Driver.
+Thông tin Vehicle.
+Vị trí Driver.
+Thông tin giao dịch.
+Tài khoản Staff.
+Audit Log.
+Authentication
+Customer → Login → Authentication → Customer Functions
+Driver   → Login → Authentication → Driver Functions
+Staff    → Login → Authentication → Admin Functions
+Authorization
+
+Ví dụ:
+
+Role	Xem Trip	Quản lý Driver	Quản lý Staff	Xem Payment
+Customer	Chuyến của mình	❌	❌	Chuyến của mình
+Driver	Chuyến được giao	Hồ sơ mình	❌	❌
+Operator	Có quyền	Có quyền	❌	Có quyền
+Admin	Có quyền	Có quyền	Có quyền	Có quyền
+
+Đây là RBAC – Role-Based Access Control.
+
+6. NFR về Data Integrity
+
+Ví dụ quan trọng nhất:
+
+Không được Assign 2 Driver cho một Booking
+Booking B001
+
+
+Driver A → ACCEPT
+Driver B → ACCEPT
+
+Hệ thống phải đảm bảo chỉ một Driver được xác nhận chính thức.
+
+Booking B001
+     ↓
+Driver A → ASSIGNED ✅
+Driver B → REJECTED ❌
+
+Điều này cần được đảm bảo ở cả business logic và database/concurrency control.
+
+7. NFR về Maintainability
+
+Hệ thống phải dễ thay đổi.
+
+Ví dụ doanh nghiệp muốn thay:
+
+Payment Provider A
+        ↓
+Payment Provider B
+
+Không nên phải sửa toàn bộ Booking System.
+
+Tương tự:
+
+Notification
+      │
+ ┌────┼─────┐
+ ↓    ↓     ↓
+Push SMS   Email
+
+Sau này thêm Zalo hoặc một provider khác thì chỉ cần mở rộng Notification layer.
+
+8. NFR về Extensibility
+
+Hệ thống hiện tại có:
+
+Car
+Motorbike
+
+Trong tương lai có thể thêm:
+
+SUV
+Van
+Luxury
+Electric Car
+Airport Transfer
+Corporate Ride
+
+Việc thêm service mới không nên yêu cầu viết lại toàn bộ Booking System.
+
+9. NFR về Monitoring & Logging
+
+Hệ thống cần theo dõi tối thiểu:
+
+Booking Success / Failed
+Driver Dispatch Success / Failed
+Payment Success / Failed
+Notification Success / Failed
+API Error
+Database Error
+Service Availability
+
+Ví dụ:
+
+flowchart LR
+    A["CAB Services"] --> B["Monitoring"]
+    B --> C["Metrics"]
+    B --> D["Logs"]
+    B --> E["Alerts"]
+
+
+    C --> F["Dashboard"]
+    D --> F
+    E --> G["Operations Team"]
+10. NFR về Backup & Recovery
+
+Các dữ liệu quan trọng như:
+
+Customer
+Driver
+Booking
+Trip
+Fare
+Payment
+Audit Log
+
+phải có cơ chế backup và recovery.
+
+Các thông số cần BA/IT xác nhận:
+
+Thông số	Cần xác định
+RPO	Cho phép mất tối đa bao nhiêu dữ liệu?
+RTO	Cho phép hệ thống khôi phục trong bao lâu?
+Backup frequency	Backup mỗi bao lâu?
+Retention	Lưu backup trong bao lâu?
+11. NFR theo mức độ ưu tiên
+
+Do dự án chỉ có 7 tuần, nên nên ưu tiên:
+
+🔴 Must Have
+NFR01 – Performance
+NFR04 – Scalability
+NFR05 – Availability
+NFR06 – Reliability
+NFR08 – Authentication
+NFR09 – Authorization
+NFR10 – Data Security
+NFR12 – Payment Security
+NFR13 – Audit Log
+NFR19 – Data Integrity
+NFR25 – Monitoring
+🟡 Should Have
+NFR14 – Maintainability
+NFR15 – Extensibility
+NFR16 – Payment Provider Extensibility
+NFR17 – Notification Extensibility
+NFR23 – Backup
+NFR24 – Disaster Recovery
+NFR27 – Usability
+🟢 Could Have / Phase 2
+Advanced Analytics
+Advanced Monitoring Dashboard
+Multi-language
+Advanced Disaster Recovery
+Advanced Auto-scaling
+Advanced Notification Routing
+12. Những NFR cần xác nhận với khách hàng
+
+Đề bài hiện chưa cung cấp các con số cụ thể, vì vậy BA không nên tự ý chốt.
+
+Cần hỏi khách hàng:
+
+Vấn đề	Câu hỏi cần xác nhận
+Performance	API tối đa bao nhiêu giây?
+Concurrent Users	Hệ thống phải phục vụ đồng thời bao nhiêu người?
+Drivers	Tối đa bao nhiêu tài xế online cùng lúc?
+Bookings	Peak có bao nhiêu Booking/phút?
+Availability	Uptime yêu cầu 99.9%, 99.95% hay mức khác?
+Dispatch	Bao lâu phải bắt đầu tìm Driver?
+Driver Location	Bao lâu cập nhật GPS một lần?
+Data Retention	Dữ liệu Booking/Payment/GPS lưu bao lâu?
+Backup	Backup bao lâu một lần?
+RPO/RTO	Mức mất dữ liệu và thời gian phục hồi chấp nhận được?
+Security	Chính sách bảo mật nào doanh nghiệp yêu cầu?
+Payment	Retry Payment tối đa bao nhiêu lần?
+Kết luận Bước 10
+
+Có thể phân biệt rất rõ:
+
+Functional Requirement: Hệ thống làm gì.
+
+Non-Functional Requirement: Hệ thống phải làm tốt đến mức nào / hoạt động như thế nào.
+
+Ví dụ với chức năng tìm tài xế:
+
+FR
+→ Hệ thống tìm Driver Available gần Customer.
+
+
+NFR
+→ Kết quả tìm kiếm phải đáp ứng thời gian xử lý phù hợp,
+  hệ thống chịu được tải cao, không bị sập khi
+  Notification/Payment gặp lỗi, dữ liệu vị trí phải
+  được bảo mật và hệ thống có khả năng mở rộng.
+
+Bước 11-12: xác định và vẽ các usecase kí hiệu UC, usecase customer thì ghi là UC01 customer, đặc tả usecase 2 bước này làm liên tục với nhau 
+Dựa trên các bước trước BR → FR → Business Process → Business Rule → Data Model → NFR, ta xây dựng Use Case cho hệ thống CAB.
+
+UC (Use Case) mô tả một mục tiêu mà một Actor muốn đạt được khi tương tác với hệ thống.
+
+1. Xác định Actor
+
+Hệ thống CAB có 3 nhóm Actor chính:
+
+Actor	Vai trò
+Customer	Đăng ký, đặt xe, theo dõi chuyến, thanh toán, đánh giá tài xế
+Driver	Nhận chuyến, cập nhật trạng thái chuyến, cập nhật vị trí
+Staff/Operator	Quản lý Customer, Driver, Vehicle, Trip và xử lý sự cố
+Payment Provider	Hệ thống bên ngoài xử lý thanh toán điện tử
+Notification Provider	Hệ thống bên ngoài gửi Push/SMS/Email
+2. Danh sách Use Case
+Customer
+Mã	Use Case	Actor
+UC01	Customer	Customer
+UC01.01	Đăng ký tài khoản	Customer
+UC01.02	Đăng nhập	Customer
+UC01.03	Cập nhật thông tin cá nhân	Customer
+UC01.04	Đặt chuyến	Customer
+UC01.05	Theo dõi chuyến	Customer
+UC01.06	Xem lịch sử chuyến	Customer
+UC01.07	Xem cước chuyến	Customer
+UC01.08	Thanh toán	Customer
+UC01.09	Đánh giá tài xế	Customer
+UC01.10	Hủy chuyến	Customer
+
+Ở đây có thể hiểu UC01 Customer là nhóm Use Case của Customer, bên dưới là các Use Case cụ thể.
+
+Driver
+Mã	Use Case	Actor
+UC02	Driver	Driver
+UC02.01	Đăng nhập	Driver
+UC02.02	Cập nhật hồ sơ	Driver
+UC02.03	Quản lý phương tiện	Driver
+UC02.04	Chuyển trạng thái Online/Offline	Driver
+UC02.05	Nhận yêu cầu chuyến	Driver
+UC02.06	Chấp nhận chuyến	Driver
+UC02.07	Từ chối chuyến	Driver
+UC02.08	Cập nhật vị trí	Driver
+UC02.09	Cập nhật trạng thái chuyến	Driver
+UC02.10	Hoàn thành chuyến	Driver
+Staff / Operator
+Mã	Use Case	Actor
+UC03	Staff/Operator	Staff
+UC03.01	Đăng nhập Admin	Staff
+UC03.02	Quản lý Customer	Staff
+UC03.03	Quản lý Driver	Staff
+UC03.04	Quản lý Vehicle	Staff
+UC03.05	Giám sát chuyến	Staff
+UC03.06	Xử lý chuyến lỗi	Staff
+UC03.07	Tra cứu giao dịch	Staff
+UC03.08	Quản lý quyền	Staff/Admin
+UC03.09	Xem báo cáo	Staff
+UC03.10	Xem Audit Log	Staff/Admin
+3. Use Case của hệ thống bên ngoài
+Mã	Use Case	Actor
+UC04	Payment Provider	External System
+UC04.01	Xử lý thanh toán điện tử	Payment Provider
+UC04.02	Trả kết quả thanh toán	Payment Provider
+UC05	Notification Provider	External System
+UC05.01	Gửi thông báo	Notification Provider
+4. Use Case Diagram tổng thể
+flowchart LR
+
+
+    C["👤 Customer"]
+    D["🚗 Driver"]
+    S["👨‍💼 Staff / Operator"]
+    PP["💳 Payment Provider"]
+    NP["🔔 Notification Provider"]
+
+
+    subgraph CAB["CAB System"]
+
+
+        UC01["UC01\nCustomer"]
+        UC01A["UC01.01\nĐăng ký"]
+        UC01B["UC01.02\nĐăng nhập"]
+        UC01C["UC01.03\nCập nhật hồ sơ"]
+        UC01D["UC01.04\nĐặt chuyến"]
+        UC01E["UC01.05\nTheo dõi chuyến"]
+        UC01F["UC01.06\nLịch sử chuyến"]
+        UC01G["UC01.07\nXem cước"]
+        UC01H["UC01.08\nThanh toán"]
+        UC01I["UC01.09\nĐánh giá"]
+        UC01J["UC01.10\nHủy chuyến"]
+
+
+        UC02["UC02\nDriver"]
+        UC02A["UC02.01\nĐăng nhập"]
+        UC02B["UC02.02\nCập nhật hồ sơ"]
+        UC02C["UC02.03\nQuản lý phương tiện"]
+        UC02D["UC02.04\nOnline / Offline"]
+        UC02E["UC02.05\nNhận yêu cầu chuyến"]
+        UC02F["UC02.06\nAccept chuyến"]
+        UC02G["UC02.07\nReject chuyến"]
+        UC02H["UC02.08\nCập nhật vị trí"]
+        UC02I["UC02.09\nCập nhật trạng thái Trip"]
+
+
+        UC03["UC03\nStaff / Operator"]
+        UC03A["UC03.01\nĐăng nhập Admin"]
+        UC03B["UC03.02\nQuản lý Customer"]
+        UC03C["UC03.03\nQuản lý Driver"]
+        UC03D["UC03.04\nQuản lý Vehicle"]
+        UC03E["UC03.05\nGiám sát Trip"]
+        UC03F["UC03.06\nXử lý Trip lỗi"]
+        UC03G["UC03.07\nTra cứu giao dịch"]
+        UC03H["UC03.08\nQuản lý quyền"]
+        UC03I["UC03.09\nBáo cáo"]
+        UC03J["UC03.10\nAudit Log"]
+
+
+        UC04["UC04\nThanh toán Online"]
+        UC05["UC05\nNotification"]
+    end
+
+
+    C --- UC01
+    D --- UC02
+    S --- UC03
+    PP --- UC04
+    NP --- UC05
+5. Use Case quan trọng nhất: UC01.04 – Đặt chuyến
+
+Đây là Use Case trung tâm của hệ thống CAB và được xây dựng trực tiếp từ Business Process ở Bước 6.
+
+Thông tin Use Case
+Thuộc tính	Nội dung
+Use Case ID	UC01.04
+Tên	Đặt chuyến
+Primary Actor	Customer
+Supporting Actor	Driver, Notification Provider
+Mục tiêu	Customer tạo yêu cầu đặt xe và được hệ thống tìm, phân công Driver
+Pre-condition	Customer đã đăng nhập
+Trigger	Customer chọn chức năng đặt chuyến
+Post-condition	Booking được tạo và Driver được assign hoặc Booking kết thúc do không tìm được Driver
+6. Main Flow – Luồng chính
+1. Customer chọn "Đặt xe".
+2. Hệ thống xác định vị trí hiện tại của Customer.
+3. Customer nhập/xác nhận điểm đón.
+4. Customer nhập điểm đến.
+5. Customer chọn loại xe.
+6. Customer xác nhận yêu cầu đặt chuyến.
+7. Hệ thống kiểm tra thông tin Booking.
+8. Hệ thống tạo Booking.
+9. Hệ thống chuyển Booking sang trạng thái SEARCHING_DRIVER.
+10. Hệ thống tìm các Driver Available.
+11. Hệ thống lọc Driver theo loại xe.
+12. Hệ thống xác định khoảng cách Driver đến điểm đón.
+13. Hệ thống xếp hạng Driver theo Business Rule.
+14. Hệ thống gửi yêu cầu nhận chuyến cho Driver phù hợp nhất.
+15. Driver chấp nhận chuyến.
+16. Hệ thống xác nhận Driver.
+17. Hệ thống chuyển Booking sang DRIVER_ASSIGNED.
+18. Hệ thống thông báo thông tin Driver cho Customer.
+19. Use Case kết thúc.
+7. Alternative Flow – Driver từ chối
+AF01 – Driver Reject
+
+Tại bước 15:
+
+15. Driver chọn Reject.
+16. Hệ thống ghi nhận Driver Assignment = REJECTED.
+17. Hệ thống không assign Driver này cho Booking.
+18. Hệ thống tìm Driver phù hợp tiếp theo.
+19. Hệ thống gửi yêu cầu cho Driver tiếp theo.
+20. Quay lại bước chờ Driver phản hồi.
+
+Customer không phải tạo Booking mới.
+
+8. Alternative Flow – Driver Timeout
+AF02 – Driver không phản hồi
+15. Hệ thống gửi request cho Driver.
+16. Driver không Accept/Reject trong thời gian quy định.
+17. Hệ thống đánh dấu Assignment = TIMEOUT.
+18. Hệ thống loại Driver khỏi lượt tìm hiện tại.
+19. Hệ thống tìm Driver tiếp theo.
+20. Gửi request cho Driver mới.
+
+Thời gian Timeout phải được xác nhận với khách hàng, ví dụ X giây.
+
+9. Alternative Flow – Chưa tìm được Driver
+AF03 – Không có Driver phù hợp
+10. Hệ thống tìm Driver.
+11. Không tìm thấy Driver phù hợp.
+12. Hệ thống kiểm tra thời gian tìm kiếm.
+13. Nếu vẫn còn trong thời gian cho phép:
+       → tiếp tục tìm Driver.
+14. Nếu vượt thời gian cho phép:
+       → Booking = NO_DRIVER_FOUND.
+15. Thông báo Customer.
+16. Use Case kết thúc.
+10. Exception Flow
+EF01 – Điểm đón không hợp lệ
+Customer nhập điểm đón
+        ↓
+Hệ thống kiểm tra
+        ↓
+Không hợp lệ
+        ↓
+Thông báo lỗi
+        ↓
+Customer nhập lại
+EF02 – Payment/Notification lỗi
+
+Payment hoặc Notification gặp lỗi không được làm mất Booking.
+
+Booking
+   ↓
+Driver Assigned
+   ↓
+Notification Error
+   ↓
+Log + Retry
+   ↓
+Booking vẫn hoạt động
+11. UC02.05 – Driver nhận yêu cầu chuyến
+Thuộc tính	Nội dung
+Use Case ID	UC02.05
+Tên	Nhận yêu cầu chuyến
+Actor	Driver
+Mục tiêu	Driver nhận thông tin Booking phù hợp và quyết định Accept/Reject
+Pre-condition	Driver đã đăng nhập và ở trạng thái Available
+Trigger	Hệ thống tìm thấy Driver phù hợp
+Post-condition	Driver Accept hoặc Reject/Timeout
+Main Flow
+1. Hệ thống tìm thấy Driver phù hợp.
+2. Hệ thống gửi thông báo Booking.
+3. Driver xem:
+   - Điểm đón
+   - Điểm đến
+   - Loại xe
+   - Thông tin cước dự kiến nếu được phép
+4. Driver chọn Accept.
+5. Hệ thống kiểm tra Driver vẫn Available.
+6. Hệ thống Assign Driver.
+7. Driver chuyển sang trạng thái BUSY.
+8. Customer nhận thông báo.
+Alternative Flow
+
+Driver Reject:
+
+Driver → Reject
+       ↓
+Assignment = REJECTED
+       ↓
+CAB tìm Driver khác
+
+Driver Timeout:
+
+Không phản hồi
+       ↓
+TIMEOUT
+       ↓
+CAB tìm Driver khác
+12. UC02.09 – Cập nhật trạng thái Trip
+
+Driver cập nhật vòng đời chuyến:
+
+DRIVER_ASSIGNED
+       ↓
+DRIVER_ARRIVING
+       ↓
+DRIVER_ARRIVED
+       ↓
+PASSENGER_PICKED_UP
+       ↓
+IN_PROGRESS
+       ↓
+COMPLETED
+Đặc tả
+Thuộc tính	Nội dung
+Actor	Driver
+Pre-condition	Driver đã được Assign
+Main Flow	Driver cập nhật trạng thái theo thực tế
+Post-condition	Trip có trạng thái mới và Customer được cập nhật
+13. UC01.08 – Thanh toán
+Thuộc tính	Nội dung
+Use Case ID	UC01.08
+Tên	Thanh toán
+Actor	Customer
+Supporting Actor	Payment Provider
+Pre-condition	Trip đã hoàn thành và Fare đã được tính
+Trigger	Customer thực hiện thanh toán
+Post-condition	Payment SUCCESS hoặc FAILED
+Main Flow
+1. Trip = COMPLETED.
+2. Hệ thống tính Fare.
+3. Customer chọn Online Payment.
+4. CAB tạo Payment Request.
+5. Payment Provider xử lý.
+6. Payment Provider trả kết quả SUCCESS.
+7. CAB cập nhật Payment = SUCCESS.
+8. Thông báo Customer.
+Exception
+Payment FAILED
+      ↓
+Thông báo Customer
+      ↓
+Retry?
+ ┌────┴────┐
+Có        Không
+ ↓          ↓
+Retry    Xử lý theo policy
+14. UC01.09 – Đánh giá Driver
+Thuộc tính	Nội dung
+Actor	Customer
+Pre-condition	Trip đã COMPLETED
+Trigger	Customer chọn đánh giá
+Main Flow	Chọn số sao → nhập nhận xét → Submit
+Post-condition	Rating được lưu và cập nhật rating Driver
+Business Rule
+Trip != COMPLETED
+       ↓
+Không được Rating
+15. UC03 – Staff/Operator
+Các chức năng chính
+UC03
+│
+├── UC03.01 Đăng nhập Admin
+├── UC03.02 Quản lý Customer
+├── UC03.03 Quản lý Driver
+├── UC03.04 Quản lý Vehicle
+├── UC03.05 Giám sát Trip
+├── UC03.06 Xử lý Trip lỗi
+├── UC03.07 Tra cứu giao dịch
+├── UC03.08 Quản lý quyền
+├── UC03.09 Báo cáo
+└── UC03.10 Audit Log
+Ví dụ UC03.05 – Giám sát Trip
+
+Main Flow:
+
+1. Staff đăng nhập Admin Portal.
+2. Chọn "Giám sát Trip".
+3. Hệ thống hiển thị các Trip đang diễn ra.
+4. Staff lọc theo:
+   - Trip ID
+   - Customer
+   - Driver
+   - Status
+5. Staff chọn Trip.
+6. Hệ thống hiển thị chi tiết Trip.
+7. Staff xem trạng thái và vị trí Driver.
+16. Quan hệ Include / Extend
+
+Đối với Use Case Đặt chuyến, có thể biểu diễn:
+
+flowchart LR
+
+
+    C["Customer"]
+
+
+    UC1(("UC01.04\nĐặt chuyến"))
+    UC2(("Xác định vị trí"))
+    UC3(("Kiểm tra Booking"))
+    UC4(("Tìm Driver"))
+    UC5(("Phân công Driver"))
+    UC6(("Thông báo"))
+    UC7(("Thanh toán"))
+    UC8(("Hủy chuyến"))
+
+
+    C --> UC1
+
+
+    UC1 -. "<<include>>".-> UC2
+    UC1 -. "<<include>>".-> UC3
+    UC1 -. "<<include>>".-> UC4
+    UC4 -. "<<include>>".-> UC5
+    UC5 -. "<<include>>".-> UC6
+
+
+    UC8 -. "<<extend>>".-> UC1
+Giải thích
+
+include dùng khi chức năng con luôn được thực hiện trong quy trình.
+
+Ví dụ:
+
+Đặt chuyến → luôn phải kiểm tra Booking.
+
+extend dùng cho hành vi có điều kiện.
+
+Ví dụ:
+
+Hủy chuyến chỉ xảy ra khi Customer muốn hủy.
+
+17. Traceability: UC liên kết với FR
+Use Case	Functional Requirement liên quan
+UC01.04 – Đặt chuyến	FR01–FR20
+UC02.05 – Nhận yêu cầu chuyến	FR12–FR17
+UC02.09 – Cập nhật Trip	FR21–FR25
+UC01.05 – Theo dõi chuyến	FR26–FR28
+UC01.08 – Thanh toán	FR29–FR35
+UC01.09 – Đánh giá	Rating requirement
+UC03.05 – Giám sát Trip	FR45–FR47
+UC03.08 – Phân quyền	FR48
+UC03.10 – Audit Log	FR49
+UC03.09 – Báo cáo	FR50
+18. Tổng hợp Bước 11–12
+
+Có thể đưa vào tài liệu BA theo cấu trúc:
+
+CAB SYSTEM
+│
+├── UC01 – Customer
+│   ├── UC01.01 – Đăng ký
+│   ├── UC01.02 – Đăng nhập
+│   ├── UC01.03 – Cập nhật hồ sơ
+│   ├── UC01.04 – Đặt chuyến ⭐
+│   ├── UC01.05 – Theo dõi chuyến
+│   ├── UC01.06 – Lịch sử chuyến
+│   ├── UC01.07 – Xem cước
+│   ├── UC01.08 – Thanh toán
+│   ├── UC01.09 – Đánh giá
+│   └── UC01.10 – Hủy chuyến
+│
+├── UC02 – Driver
+│   ├── UC02.01 – Đăng nhập
+│   ├── UC02.02 – Hồ sơ
+│   ├── UC02.03 – Phương tiện
+│   ├── UC02.04 – Online/Offline
+│   ├── UC02.05 – Nhận yêu cầu
+│   ├── UC02.06 – Accept
+│   ├── UC02.07 – Reject
+│   ├── UC02.08 – Vị trí
+│   └── UC02.09 – Trạng thái Trip
+│
+└── UC03 – Staff
+    ├── UC03.01 – Đăng nhập
+    ├── UC03.02 – Customer
+    ├── UC03.03 – Driver
+    ├── UC03.04 – Vehicle
+    ├── UC03.05 – Giám sát Trip
+    ├── UC03.06 – Xử lý Trip lỗi
+    ├── UC03.07 – Giao dịch
+    ├── UC03.08 – Phân quyền
+    ├── UC03.09 – Báo cáo
+    └── UC03.10 – Audit Log
+
+Bước 13: Acceptance criteria những tiêu chí chấp nhận, mục đích của, xác định khi nào kết thúc và nghiệm thu, làm theo dạng markdown, code mermaid
+1. Acceptance Criteria là gì?
+
+Acceptance Criteria (AC) là tập hợp các điều kiện mà hệ thống/chức năng phải đáp ứng để Business/Customer xác nhận rằng yêu cầu đã được hoàn thành và có thể nghiệm thu.
+
+Nói đơn giản:
+
+Acceptance Criteria trả lời câu hỏi: "Làm thế nào để biết chức năng này đã làm đúng và có thể nghiệm thu?"
+
+Acceptance Criteria không chỉ dùng để Developer biết cần làm gì, mà còn giúp:
+
+BA xác định rõ phạm vi hoàn thành.
+Developer hiểu điều kiện cần đáp ứng.
+Tester có cơ sở viết test case.
+Customer biết khi nào có thể nghiệm thu.
+Tránh tranh luận "đã làm xong hay chưa".
+2. Mục đích của Acceptance Criteria
+Mục đích	Diễn giải
+Xác định điều kiện hoàn thành	Biết chính xác khi nào một yêu cầu được xem là Done
+Nghiệm thu	Customer có căn cứ xác nhận chức năng đạt yêu cầu
+Kiểm thử	Tester dựa vào AC để xây dựng Test Case
+Giảm hiểu nhầm	BA, Developer, Tester và Customer cùng hiểu một yêu cầu
+Kiểm soát phạm vi	Tránh phát sinh chức năng ngoài phạm vi
+Đo lường chất lượng	Xác định kết quả cần đạt bằng các tiêu chí cụ thể
+3. Nguyên tắc xây dựng Acceptance Criteria
+
+Acceptance Criteria nên:
+
+Rõ ràng
+Có thể kiểm thử
+Có thể đo lường
+Không mơ hồ
+Liên kết với Business Requirement / Functional Requirement
+Có điều kiện Pass/Fail
+
+Ví dụ không tốt:
+
+Hệ thống tìm tài xế nhanh.
+
+Không rõ "nhanh" là bao nhiêu.
+
+Nên viết:
+
+Hệ thống phải bắt đầu quá trình tìm tài xế trong tối đa X giây sau khi Booking được xác nhận.
+
+X cần được Customer xác nhận.
+
+4. Acceptance Criteria cho các chức năng chính
+AC01 – Đăng ký Customer
+Mã	Acceptance Criteria
+AC01.01	Customer nhập đầy đủ thông tin bắt buộc thì có thể tạo tài khoản.
+AC01.02	Số điện thoại/email đã tồn tại thì hệ thống không cho đăng ký trùng.
+AC01.03	Thông tin không hợp lệ phải hiển thị thông báo lỗi rõ ràng.
+AC01.04	Sau khi đăng ký thành công, tài khoản được lưu vào hệ thống.
+5. AC02 – Đăng nhập
+Mã	Acceptance Criteria
+AC02.01	Customer nhập đúng thông tin xác thực thì đăng nhập thành công.
+AC02.02	Sai thông tin xác thực thì không được đăng nhập.
+AC02.03	Hệ thống không hiển thị thông tin nhạy cảm trong thông báo lỗi.
+AC02.04	User chưa xác thực không được truy cập chức năng yêu cầu đăng nhập.
+6. AC03 – Đặt chuyến
+
+Đây là Acceptance Criteria quan trọng nhất của CAB.
+
+Mã	Acceptance Criteria
+AC03.01	Customer phải đăng nhập trước khi đặt chuyến.
+AC03.02	Customer phải cung cấp điểm đón hợp lệ.
+AC03.03	Customer phải cung cấp điểm đến hợp lệ.
+AC03.04	Customer phải lựa chọn loại xe hợp lệ.
+AC03.05	Sau khi Customer xác nhận, hệ thống phải tạo Booking.
+AC03.06	Booking mới phải chuyển sang trạng thái SEARCHING_DRIVER.
+AC03.07	Hệ thống phải tìm các Driver đang AVAILABLE.
+AC03.08	Driver được lựa chọn phải phù hợp với loại xe yêu cầu.
+AC03.09	Hệ thống phải ưu tiên Driver theo tiêu chí Business đã được xác nhận.
+AC03.10	Khi Driver Accept, hệ thống phải chuyển Booking sang DRIVER_ASSIGNED.
+AC03.11	Customer phải nhận được thông tin Driver đã nhận chuyến.
+AC03.12	Nếu Driver Reject, hệ thống phải tìm Driver tiếp theo.
+AC03.13	Nếu Driver không phản hồi trong thời gian quy định, Assignment phải chuyển thành TIMEOUT.
+AC03.14	Sau Timeout, hệ thống phải tiếp tục tìm Driver khác.
+AC03.15	Customer không phải tạo lại Booking khi Driver Reject/Timeout.
+AC03.16	Nếu hết thời gian tìm kiếm mà không có Driver, Customer phải nhận được thông báo rõ ràng.
+7. Luồng Acceptance Criteria của việc tìm Driver
+
+Có thể biểu diễn bằng Mermaid:
+
+flowchart TD
+
+
+    A["Customer xác nhận đặt chuyến"]
+    B["Tạo Booking"]
+    C["Booking = SEARCHING_DRIVER"]
+    D["Tìm Driver phù hợp"]
+    E{"Có Driver phù hợp?"}
+    F["Gửi yêu cầu cho Driver"]
+    G{"Driver phản hồi?"}
+    H{"Driver Accept?"}
+    I["Driver được Assign"]
+    J["Booking = DRIVER_ASSIGNED"]
+    K["Thông báo Customer"]
+    L["Driver Reject / Timeout"]
+    M{"Còn Driver khác?"}
+    N["Tìm Driver tiếp theo"]
+    O["Booking = NO_DRIVER_FOUND"]
+    P["Thông báo Customer không tìm được Driver"]
+
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+
+
+    E -- "Có" --> F
+    E -- "Không" --> O
+    O --> P
+
+
+    F --> G
+    G -- "Có" --> H
+    G -- "Không / Timeout" --> L
+
+
+    H -- "Accept" --> I
+    I --> J
+    J --> K
+
+
+    H -- "Reject" --> L
+    L --> M
+
+
+    M -- "Có" --> N
+    N --> D
+
+
+    M -- "Không" --> O
+8. AC04 – Driver nhận chuyến
+Mã	Acceptance Criteria
+AC04.01	Chỉ Driver có trạng thái AVAILABLE mới được nhận yêu cầu chuyến.
+AC04.02	Driver nhận được thông báo khi có Booking phù hợp.
+AC04.03	Driver có thể Accept hoặc Reject.
+AC04.04	Khi Accept thành công, Driver chuyển sang trạng thái BUSY.
+AC04.05	Khi Reject, Driver không được assign vào Booking đó.
+AC04.06	Driver không phản hồi quá thời gian quy định thì Assignment = TIMEOUT.
+AC04.07	Một Booking chỉ được có một Driver được Assign chính thức.
+9. AC05 – Thực hiện Trip
+Mã	Acceptance Criteria
+AC05.01	Driver được assign mới có thể bắt đầu Trip.
+AC05.02	Driver có thể cập nhật DRIVER_ARRIVING.
+AC05.03	Driver có thể cập nhật DRIVER_ARRIVED.
+AC05.04	Driver có thể cập nhật PASSENGER_PICKED_UP.
+AC05.05	Driver có thể cập nhật IN_PROGRESS.
+AC05.06	Driver có thể cập nhật COMPLETED.
+AC05.07	Customer nhìn thấy trạng thái Trip tương ứng.
+AC05.08	Không cho phép cập nhật trạng thái sai thứ tự nếu Business Rule không cho phép.
+10. AC06 – Tính cước
+Mã	Acceptance Criteria
+AC06.01	Fare chỉ được tính khi Trip hoàn thành hoặc theo policy đã xác nhận.
+AC06.02	Hệ thống sử dụng đúng loại dịch vụ/loại xe.
+AC06.03	Tổng tiền phải được tính theo Pricing Rule đã được Customer xác nhận.
+AC06.04	Customer có thể xem số tiền phải thanh toán.
+AC06.05	Hệ thống lưu lại kết quả tính cước.
+
+Công thức cước cụ thể hiện chưa được khách hàng chốt, vì vậy AC này phải được cập nhật sau khi có Pricing Business Rule chính thức.
+
+11. AC07 – Thanh toán
+Mã	Acceptance Criteria
+AC07.01	Customer có thể chọn tiền mặt nếu Booking/Trip cho phép.
+AC07.02	Customer có thể chọn thanh toán điện tử.
+AC07.03	CAB không lưu trực tiếp thông tin nhạy cảm của thẻ/tài khoản.
+AC07.04	Payment Provider trả SUCCESS thì Payment = SUCCESS.
+AC07.05	Payment Provider trả FAILED thì Payment = FAILED.
+AC07.06	Customer nhận được thông báo khi thanh toán thất bại.
+AC07.07	Customer có thể Retry theo chính sách doanh nghiệp.
+AC07.08	Payment lỗi không làm mất thông tin Trip/Booking.
+12. AC08 – Notification
+Mã	Acceptance Criteria
+AC08.01	Customer nhận thông báo khi Booking được tiếp nhận.
+AC08.02	Customer nhận thông báo khi Driver Accept.
+AC08.03	Customer nhận thông báo khi Driver đến điểm đón.
+AC08.04	Customer nhận thông báo khi Trip hoàn thành.
+AC08.05	Customer nhận thông báo kết quả Payment.
+AC08.06	Driver nhận thông báo khi có Booking phù hợp.
+AC08.07	Notification lỗi không làm Booking/Trip bị mất dữ liệu.
+13. AC09 – Đánh giá Driver
+Mã	Acceptance Criteria
+AC09.01	Chỉ Customer đã thực hiện Trip mới được đánh giá Driver.
+AC09.02	Chỉ Trip COMPLETED mới được đánh giá.
+AC09.03	Customer phải chọn Score hợp lệ.
+AC09.04	Rating được lưu thành công sau khi Submit.
+AC09.05	Rating trung bình của Driver được cập nhật theo Business Rule.
+14. AC10 – Staff quản lý hệ thống
+Mã	Acceptance Criteria
+AC10.01	Staff phải đăng nhập trước khi truy cập Admin Portal.
+AC10.02	Staff chỉ được thực hiện chức năng theo Permission.
+AC10.03	Staff không có quyền không được thực hiện thao tác nhạy cảm.
+AC10.04	Staff có thể xem các Trip đang hoạt động.
+AC10.05	Staff có thể tra cứu giao dịch.
+AC10.06	Các thao tác quản trị quan trọng phải được ghi Audit Log.
+15. Acceptance Criteria cho Non-Functional Requirements
+
+Acceptance Criteria không chỉ dành cho Functional Requirement mà còn dùng cho NFR.
+
+Ví dụ:
+
+NFR	Acceptance Criteria
+Performance	API đáp ứng trong ngưỡng thời gian đã thống nhất
+Availability	Uptime đạt SLA đã thống nhất
+Security	User không có quyền không thể truy cập dữ liệu
+Scalability	Hệ thống đáp ứng mức tải được xác định
+Reliability	Payment/Notification lỗi không làm Booking ngừng hoạt động
+Audit	Thao tác quan trọng có Audit Log
+Recovery	Hệ thống khôi phục trong thời gian RTO đã thống nhất
+
+Các con số cụ thể như 2 giây, 99.9%, RTO/RPO... cần được khách hàng xác nhận trước khi đưa thành tiêu chí nghiệm thu chính thức.
+
+16. Khi nào một Use Case được xem là "Done"?
+
+Có thể xác định theo quy trình:
+
+flowchart TD
+
+
+    A["Business Requirement"]
+    B["Functional Requirement"]
+    C["Use Case"]
+    D["Development"]
+    E["Developer Test"]
+    F["QA / SIT"]
+    G{"Tất cả Acceptance Criteria đạt?"}
+    H["UAT với Customer"]
+    I{"Customer chấp nhận?"}
+    J["DONE / ACCEPTED"]
+    K["Fix / Rework"]
+
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+
+
+    G -- "Không" --> K
+    K --> D
+
+
+    G -- "Có" --> H
+    H --> I
+
+
+    I -- "Không" --> K
+    I -- "Có" --> J
+17. Definition of Done cho dự án CAB
+
+Để một chức năng được nghiệm thu, nên yêu cầu tối thiểu:
+
+ Đã implement đúng Functional Requirement.
+ Tất cả Acceptance Criteria đều PASS.
+ Đã hoàn thành Unit Test.
+ Đã hoàn thành Integration/SIT Test.
+ Không còn lỗi Critical/Blocker.
+ Các lỗi còn lại được Customer chấp nhận nếu có.
+ Security requirement liên quan đã được kiểm tra.
+ Audit/Logging đã được kiểm tra nếu có yêu cầu.
+ Documentation được cập nhật.
+ Customer thực hiện UAT và xác nhận Accepted.
+18. Mối liên hệ từ Requirement đến Acceptance
+
+Toàn bộ các bước BA của CAB có thể nối thành:
+
+flowchart LR
+
+
+    BG["Business Goal"]
+    BR["Business Requirement"]
+    FR["Functional Requirement"]
+    UC["Use Case"]
+    AC["Acceptance Criteria"]
+    TC["Test Case"]
+    UAT["UAT"]
+    DONE["Accepted / Done"]
+
+
+    BG --> BR
+    BR --> FR
+    FR --> UC
+    UC --> AC
+    AC --> TC
+    TC --> UAT
+    UAT --> DONE
+Ví dụ xuyên suốt với chức năng tìm tài xế
+BG02
+↓
+Giảm thời gian tìm tài xế
+
+
+BR
+↓
+Hệ thống tự động tìm và phân công Driver
+
+
+FR
+↓
+FR01: Xác định vị trí Customer
+FR02: Lọc Driver Available
+FR03: Tính khoảng cách
+FR04: Ưu tiên Driver
+FR05: Gửi request
+FR06: Xử lý Accept/Reject/Timeout
+
+
+UC
+↓
+UC01.04 – Đặt chuyến
+
+
+AC
+↓
+Driver Reject → tìm Driver tiếp theo
+Driver Timeout → tìm Driver tiếp theo
+Driver Accept → Assignment thành công
+Không có Driver → thông báo Customer
+
+
+TEST
+↓
+QA/UAT kiểm tra toàn bộ AC
+
+
+DONE
+↓
+Customer xác nhận nghiệm thu
+
+Mục tiêu cuối cùng: xác định rõ hệ thống phải làm gì, làm như thế nào và điều kiện nào để khách hàng xác nhận là đã yêu cầu
+Bước 14: Truy xuất nguồn gốc yêu cầu, ma trận truy xuất yêu cầu, cột 1 BG, cột thứ 2 BR, cột thứ 3 FR, cột UC cột tiếp theo AC, cột tiếp theo TC
+Sau khi hoàn thành các bước từ Business Goal → Business Requirement → Functional Requirement → Use Case → Acceptance Criteria, bước 14 xây dựng Requirement Traceability Matrix (RTM) để đảm bảo:
+
+Mỗi mục tiêu Business đều được chuyển thành yêu cầu, chức năng, Use Case, tiêu chí nghiệm thu và Test Case tương ứng.
+
+RTM giúp trả lời 3 câu hỏi:
+
+Hệ thống phải làm gì? → FR / UC
+Làm như thế nào để đáp ứng Business Goal? → BR → FR → UC
+Làm sao biết đã làm đúng? → AC → TC
+2. Cấu trúc RTM
+
+Theo yêu cầu, ma trận gồm:
+
+BG	BR	FR	UC	AC	TC
+
+Trong đó:
+
+BG = Business Goal
+BR = Business Requirement
+FR = Functional Requirement
+UC = Use Case
+AC = Acceptance Criteria
+TC = Test Case
+3. Business Goal của CAB
+
+Trước tiên xác định các BG chính:
+
+Mã	Business Goal
+BG01	Xây dựng nền tảng CAB cho phép Customer đặt và theo dõi chuyến xe một cách thuận tiện.
+BG02	Giảm thời gian và công sức trong việc tìm kiếm, phân công Driver.
+BG03	Quản lý và theo dõi toàn bộ quá trình thực hiện Trip.
+BG04	Hỗ trợ tính cước và thanh toán tiền mặt hoặc thanh toán điện tử an toàn.
+BG05	Cung cấp hệ thống thông báo kịp thời cho Customer và Driver.
+BG06	Cung cấp công cụ vận hành và quản trị cho doanh nghiệp.
+BG07	Xây dựng nền tảng có khả năng mở rộng, bảo mật và hoạt động ổn định.
+4. Business Requirement
+Mã	Business Requirement
+BR01	Hệ thống cho phép Customer đăng ký, đăng nhập và quản lý thông tin cá nhân.
+BR02	Hệ thống cho phép Customer tạo và quản lý yêu cầu đặt xe.
+BR03	Hệ thống tự động tìm kiếm và phân công Driver phù hợp.
+BR04	Hệ thống cho phép Driver nhận, từ chối và thực hiện Trip.
+BR05	Hệ thống cho phép Customer theo dõi trạng thái Trip.
+BR06	Hệ thống hỗ trợ tính cước và thanh toán bằng tiền mặt hoặc điện tử.
+BR07	Hệ thống cung cấp Notification cho Customer và Driver.
+BR08	Hệ thống cho phép Customer đánh giá Driver sau Trip.
+BR09	Hệ thống cung cấp chức năng quản trị và vận hành.
+BR10	Hệ thống phải bảo mật, ghi nhận Audit và kiểm soát quyền truy cập.
+BR11	Hệ thống phải có khả năng mở rộng và tích hợp với các hệ thống bên ngoài.
+5. Functional Requirement
+
+Một số FR chính:
+
+Mã	Functional Requirement
+FR01	Xác thực Customer
+FR02	Quản lý thông tin Customer
+FR03	Xác định vị trí Customer
+FR04	Nhập điểm đón và điểm đến
+FR05	Chọn loại xe
+FR06	Tạo Booking
+FR07	Tìm Driver Available
+FR08	Lọc Driver theo loại xe
+FR09	Xác định khoảng cách Driver
+FR10	Ưu tiên Driver theo tiêu chí vận hành
+FR11	Gửi yêu cầu chuyến cho Driver
+FR12	Xử lý Driver Accept
+FR13	Xử lý Driver Reject
+FR14	Xử lý Driver Timeout
+FR15	Tìm Driver tiếp theo
+FR16	Thông báo không tìm được Driver
+FR17	Cập nhật trạng thái Trip
+FR18	Theo dõi vị trí Driver
+FR19	Tính Fare
+FR20	Thanh toán tiền mặt
+FR21	Thanh toán điện tử
+FR22	Retry Payment
+FR23	Gửi Notification
+FR24	Đánh giá Driver
+FR25	Quản lý Customer/Driver/Vehicle
+FR26	Giám sát Trip
+FR27	Tra cứu giao dịch
+FR28	Báo cáo hoạt động
+FR29	RBAC
+FR30	Audit Log
+6. Requirement Traceability Matrix
+
+Dưới đây là RTM cấp Business → Test cho CAB:
+
+BG	BR	FR	UC	AC	TC
+BG01	BR01	FR01, FR02	UC01.01, UC01.02, UC01.03	AC01.01–AC01.04, AC02.01–AC02.04	TC01–TC06
+BG01	BR02	FR03–FR06	UC01.04	AC03.01–AC03.06	TC07–TC14
+BG02	BR03	FR07–FR16	UC01.04	AC03.07–AC03.16	TC15–TC28
+BG02	BR04	FR11–FR15	UC02.05–UC02.07	AC04.01–AC04.07	TC29–TC38
+BG03	BR05	FR17–FR18	UC01.05, UC02.09	AC05.01–AC05.08	TC39–TC48
+BG04	BR06	FR19–FR22	UC01.07, UC01.08	AC06.01–AC06.05, AC07.01–AC07.08	TC49–TC62
+BG05	BR07	FR23	UC01.05, UC02.05	AC08.01–AC08.07	TC63–TC72
+BG01	BR08	FR24	UC01.09	AC09.01–AC09.05	TC73–TC77
+BG06	BR09	FR25–FR28	UC03.02–UC03.07, UC03.09	AC10.01–AC10.06	TC78–TC90
+BG06	BR10	FR29–FR30	UC03.01, UC03.08, UC03.10	AC10.01–AC10.06	TC91–TC98
+BG07	BR11	FR29–FR30 + NFR	UC03.08, UC03.10	AC NFR	TC99–TC110
+7. Traceability chi tiết cho chức năng đặt xe
+
+Đây là phần quan trọng nhất nên có trong tài liệu.
+
+BG	BR	FR	UC	AC	TC
+BG01	BR02	FR03	UC01.04	AC03.02	TC07 – Kiểm tra điểm đón
+BG01	BR02	FR04	UC01.04	AC03.03	TC08 – Kiểm tra điểm đến
+BG01	BR02	FR05	UC01.04	AC03.04	TC09 – Chọn loại xe
+BG01	BR02	FR06	UC01.04	AC03.05	TC10 – Tạo Booking
+BG02	BR03	FR07	UC01.04	AC03.07	TC15 – Tìm Driver Available
+BG02	BR03	FR08	UC01.04	AC03.08	TC16 – Lọc loại xe
+BG02	BR03	FR09	UC01.04	AC03.09	TC17 – Tính khoảng cách
+BG02	BR03	FR10	UC01.04	AC03.09	TC18 – Ưu tiên Driver
+BG02	BR03	FR11	UC01.04	AC03.10	TC19 – Driver Accept
+BG02	BR03	FR13	UC01.04	AC03.12	TC20 – Driver Reject
+BG02	BR03	FR14	UC01.04	AC03.13	TC21 – Driver Timeout
+BG02	BR03	FR15	UC01.04	AC03.14	TC22 – Tìm Driver tiếp theo
+BG02	BR03	FR16	UC01.04	AC03.16	TC23 – Không có Driver
+8. Mermaid – Traceability Flow
+
+Có thể vẽ mối quan hệ từ BG → BR → FR → UC → AC → TC bằng Mermaid:
+
+flowchart LR
+
+
+    BG02["BG02\nGiảm thời gian tìm Driver"]
+
+
+    BR03["BR03\nTự động tìm & phân công Driver"]
+
+
+    FR07["FR07\nTìm Driver Available"]
+    FR08["FR08\nLọc theo loại xe"]
+    FR09["FR09\nXác định khoảng cách"]
+    FR10["FR10\nƯu tiên Driver"]
+    FR11["FR11\nGửi yêu cầu"]
+    FR13["FR13\nXử lý Reject"]
+    FR14["FR14\nXử lý Timeout"]
+    FR15["FR15\nTìm Driver tiếp theo"]
+
+
+    UC["UC01.04\nĐặt chuyến"]
+
+
+    AC01["AC03.07\nDriver phải Available"]
+    AC02["AC03.08\nDriver phù hợp loại xe"]
+    AC03["AC03.09\nƯu tiên Driver"]
+    AC04["AC03.10\nDriver Accept"]
+    AC05["AC03.12\nDriver Reject"]
+    AC06["AC03.13\nDriver Timeout"]
+    AC07["AC03.14\nTìm Driver tiếp theo"]
+    AC08["AC03.16\nKhông tìm được Driver"]
+
+
+    TC01["TC15\nTest Available Driver"]
+    TC02["TC16\nTest Vehicle Type"]
+    TC03["TC17\nTest Distance"]
+    TC04["TC18\nTest Priority"]
+    TC05["TC19\nTest Accept"]
+    TC06["TC20\nTest Reject"]
+    TC07["TC21\nTest Timeout"]
+    TC08["TC22\nTest Next Driver"]
+    TC09["TC23\nTest No Driver"]
+
+
+    BG02 --> BR03
+
+
+    BR03 --> FR07
+    BR03 --> FR08
+    BR03 --> FR09
+    BR03 --> FR10
+    BR03 --> FR11
+    BR03 --> FR13
+    BR03 --> FR14
+    BR03 --> FR15
+
+
+    FR07 --> UC
+    FR08 --> UC
+    FR09 --> UC
+    FR10 --> UC
+    FR11 --> UC
+    FR13 --> UC
+    FR14 --> UC
+    FR15 --> UC
+
+
+    UC --> AC01
+    UC --> AC02
+    UC --> AC03
+    UC --> AC04
+    UC --> AC05
+    UC --> AC06
+    UC --> AC07
+    UC --> AC08
+
+
+    AC01 --> TC01
+    AC02 --> TC02
+    AC03 --> TC03
+    AC04 --> TC05
+    AC05 --> TC06
+    AC06 --> TC07
+    AC07 --> TC08
+    AC08 --> TC09
+9. Mermaid – Tổng thể Requirement Traceability
+flowchart TD
+
+
+    BG["Business Goals"]
+
+
+    BG01["BG01\nĐặt & theo dõi chuyến"]
+    BG02["BG02\nGiảm thời gian tìm Driver"]
+    BG03["BG03\nQuản lý Trip"]
+    BG04["BG04\nTính cước & Thanh toán"]
+    BG05["BG05\nThông báo"]
+    BG06["BG06\nVận hành & Quản trị"]
+    BG07["BG07\nMở rộng & Bảo mật"]
+
+
+    BR["Business Requirements"]
+    FR["Functional Requirements"]
+    UC["Use Cases"]
+    AC["Acceptance Criteria"]
+    TC["Test Cases"]
+
+
+    BG --> BG01
+    BG --> BG02
+    BG --> BG03
+    BG --> BG04
+    BG --> BG05
+    BG --> BG06
+    BG --> BG07
+
+
+    BG01 --> BR
+    BG02 --> BR
+    BG03 --> BR
+    BG04 --> BR
+    BG05 --> BR
+    BG06 --> BR
+    BG07 --> BR
+
+
+    BR --> FR
+    FR --> UC
+    UC --> AC
+    AC --> TC
+
+
+    TC --> RESULT["UAT / Acceptance"]
+
+
+    RESULT --> PASS{"All criteria PASS?"}
+
+
+    PASS -- "YES" --> DONE["ACCEPTED / DONE"]
+    PASS -- "NO" --> FIX["REWORK"]
+    FIX --> FR
+10. Ý nghĩa của RTM
+
+RTM giúp kiểm tra không bị mất yêu cầu trong quá trình phát triển.
+
+Ví dụ:
+
+BG02
+↓
+BR03
+↓
+FR07
+↓
+UC01.04
+↓
+AC03.07
+↓
+TC15
+↓
+PASS
+
+Nếu có một BR nhưng không có FR:
+
+BR03
+↓
+❌ Không có FR
+
+→ Có khả năng yêu cầu chưa được thiết kế/triển khai.
+
+Nếu có FR nhưng không có AC:
+
+FR07
+↓
+❌ Không có AC
+
+→ Chưa xác định rõ điều kiện để Customer nghiệm thu.
+
+Nếu có AC nhưng không có TC:
+
+AC03.07
+↓
+❌ Không có TC
+
+→ Chưa có Test Case để chứng minh yêu cầu đạt.
+
+11. Coverage cuối cùng
+
+Mục tiêu của Bước 14 là đạt được chuỗi:
+
+BG
+↓
+BR
+↓
+FR
+↓
+UC
+↓
+AC
+↓
+TC
+↓
+UAT
+↓
+Customer Acceptance
