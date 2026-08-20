@@ -778,3 +778,703 @@ Stakeholder quan trọng nhất đối với dự án CAB có thể tập trung 
                     EXTERNAL
                         │
           Payment / Map / Notification
+
+Bước 3: Xác định mục tiêu của business goal, BG01 là cái gì, BG02 là cái gì, làm giảm thời gian tìm tài xế, mục đích hệ thống có chức năng tìm tài xế, hỗ trọ cho phép thanh toán bằng tiền mặt hoặc trực tuyến
+Business Goals
+Mã	Business Goal	Mục tiêu
+BG01	Tự động hóa quy trình tìm và phân công tài xế	Hệ thống tự động tìm tài xế phù hợp dựa trên vị trí, trạng thái sẵn sàng và các tiêu chí vận hành, giảm sự phụ thuộc vào việc điều phối thủ công.
+BG02	Giảm thời gian tìm tài xế	Rút ngắn thời gian từ lúc khách hàng gửi yêu cầu đặt xe đến khi có tài xế nhận chuyến, đồng thời tự động tìm tài xế khác nếu tài xế được đề xuất từ chối hoặc không phản hồi.
+BG03	Hỗ trợ thanh toán linh hoạt	Cho phép khách hàng thanh toán bằng tiền mặt hoặc phương thức thanh toán điện tử, đồng thời tích hợp với Payment Provider mà không lưu trực tiếp thông tin nhạy cảm của thẻ/tài khoản trong CAB.
+BG04	Nâng cao trải nghiệm khách hàng	Cho phép khách hàng đặt xe, theo dõi trạng thái chuyến, biết thông tin tài xế/ETA, xem lịch sử và đánh giá tài xế.
+BG05	Nâng cao hiệu quả vận hành	Cung cấp công cụ để nhân viên vận hành theo dõi chuyến, quản lý tài xế, xử lý sự cố và tra cứu giao dịch.
+BG06	Xây dựng nền tảng có khả năng mở rộng	Cho phép hệ thống phục vụ lượng lớn khách hàng/tài xế và có thể bổ sung dịch vụ, payment method, notification provider hoặc các thành phần kỹ thuật mới trong tương lai.
+BG07	Đảm bảo tính ổn định và bảo mật	Hạn chế việc lỗi của Payment/Notification làm ảnh hưởng toàn bộ hệ thống, đồng thời bảo vệ dữ liệu cá nhân, vị trí, giao dịch và kiểm soát quyền truy cập.
+Mối quan hệ giữa các mục tiêu
+flowchart LR
+    BG01["BG01 - Tự động tìm và phân công tài xế"]
+    BG02["BG02 - Giảm thời gian tìm tài xế"]
+    BG03["BG03 - Hỗ trợ thanh toán tiền mặt / trực tuyến"]
+
+
+    F1["Chức năng Driver Dispatch"]
+    F2["Chức năng tìm Driver gần khách"]
+    F3["Cơ chế Reject / Timeout / Retry"]
+    F4["Cash Payment"]
+    F5["Online Payment"]
+
+
+    BG01 --> F1
+    BG01 --> F2
+    BG02 --> F3
+    BG02 --> F2
+    BG03 --> F4
+    BG03 --> F5
+
+Ý nghĩa: BG01 và BG02 liên quan trực tiếp đến Driver Dispatch, còn BG03 là mục tiêu nghiệp vụ dẫn đến nhóm chức năng Payment. Đây sẽ là cơ sở để sang bước tiếp theo xác định Business Requirement (BR) và Functional Requirement (FR).
+
+Bước 4 xác định phạm vi yêu cầu để thực hiện, ví dụ, quản lý khách hàng, quản lý tài xế, xác định các modun cơ bản, xác định các phần mềm mvd, cái gì nên làm và cái gì không nên làm, làm theo dạng markdown
+1. Phạm vi tổng thể
+
+Phạm vi MVP của CAB System nên tập trung vào quy trình cốt lõi:
+
+Đăng ký → Đặt xe → Tìm tài xế → Nhận chuyến → Thực hiện chuyến → Tính cước → Thanh toán → Thông báo → Đánh giá
+
+Ngoài ra cần có Admin/Operation để doanh nghiệp quản lý và giám sát hoạt động.
+
+2. Các module cơ bản của hệ thống
+Mã	Module	Nội dung chính	MVP
+M01	Quản lý khách hàng	Đăng ký, đăng nhập, hồ sơ, lịch sử chuyến	✅ Nên làm
+M02	Quản lý tài xế	Hồ sơ, trạng thái hoạt động, thông tin phương tiện	✅ Nên làm
+M03	Quản lý phương tiện	Loại xe, biển số, thông tin xe	✅ Nên làm
+M04	Đặt xe	Điểm đón, điểm đến, loại xe, tạo yêu cầu	✅ Nên làm
+M05	Tìm & phân công tài xế	Tìm Driver phù hợp, accept/reject, timeout, retry	✅ Bắt buộc
+M06	Quản lý chuyến đi	Theo dõi và cập nhật trạng thái Trip	✅ Bắt buộc
+M07	Định vị & ETA	Vị trí Driver, khoảng cách, thời gian dự kiến	✅ Nên làm
+M08	Tính cước	Xác định fare sau khi hoàn thành chuyến	✅ Bắt buộc
+M09	Thanh toán	Tiền mặt + thanh toán trực tuyến	✅ Bắt buộc
+M10	Thông báo	Thông báo cho Customer/Driver	✅ Bắt buộc
+M11	Đánh giá	Customer đánh giá Driver sau chuyến	✅ Nên làm
+M12	Quản trị & vận hành	Quản lý Customer, Driver, Vehicle, Trip	✅ Bắt buộc
+M13	Phân quyền	Role/Permission cho nhân viên	✅ Bắt buộc
+M14	Báo cáo	Trip, doanh thu, hoàn thành, hủy	🟡 Cơ bản
+M15	Audit Log	Lưu vết thao tác quan trọng	✅ Nên làm
+M16	Khuyến mãi	Voucher, discount, campaign	❌ Không làm MVP
+M17	Loyalty	Điểm thưởng, membership	❌ Không làm MVP
+M18	Corporate Account	Tài khoản doanh nghiệp	❌ Không làm MVP
+M19	Advanced Analytics	BI, dashboard phân tích nâng cao	❌ Không làm MVP
+M20	Multi-service	Giao hàng, thuê xe, dịch vụ khác	❌ Không làm MVP
+3. Phân chia phạm vi theo chức năng
+3.1. Quản lý khách hàng
+Nên làm
+Đăng ký tài khoản.
+Đăng nhập.
+Đăng xuất.
+Cập nhật thông tin cá nhân.
+Xem lịch sử chuyến.
+Xem thông tin chuyến.
+Xem số tiền phải thanh toán.
+Đánh giá tài xế.
+Không nên làm trong MVP
+Loyalty/điểm thưởng.
+Membership.
+Social login nếu chưa cần thiết.
+Referral.
+Chương trình khách hàng thân thiết.
+4. Quản lý tài xế
+Nên làm
+Tạo tài khoản Driver.
+Cập nhật hồ sơ.
+Quản lý thông tin phương tiện.
+Online/Offline.
+Available/Unavailable.
+Nhận booking.
+Accept/Reject booking.
+Cập nhật trạng thái chuyến.
+Gửi vị trí.
+Không nên làm trong MVP
+Hệ thống thưởng Driver phức tạp.
+Xếp hạng Driver nâng cao.
+Gamification.
+Tự động tính hoa hồng phức tạp.
+5. Đặt xe
+
+Customer có thể:
+
+Nhập điểm đón
+      ↓
+Nhập điểm đến
+      ↓
+Chọn loại xe
+      ↓
+Xác nhận đặt xe
+      ↓
+Tạo Booking
+      ↓
+Tìm Driver
+Nên làm
+Pickup location.
+Destination.
+Vehicle type.
+Create booking.
+Cancel booking theo policy.
+Cần xác nhận
+Có cho phép đặt xe trước không?
+Có đặt xe cho người khác không?
+Có nhiều điểm đến không?
+Có chuyến khứ hồi không?
+
+Nếu chưa có yêu cầu, không đưa vào MVP.
+
+6. Tìm và phân công tài xế
+
+Đây là module quan trọng nhất của CAB.
+
+Nên làm
+Booking Created
+       ↓
+Tìm Driver phù hợp
+       ↓
+Ưu tiên Driver gần
+       ↓
+Gửi Request
+       ↓
+ ┌─────┴─────┐
+Accept      Reject/Timeout
+  ↓              ↓
+Assign       Tìm Driver khác
+
+Hệ thống phải:
+
+tìm Driver đang available;
+kiểm tra loại xe;
+xác định Driver phù hợp;
+ưu tiên Driver gần khách;
+gửi yêu cầu;
+xử lý timeout;
+xử lý reject;
+tiếp tục tìm Driver khác;
+thông báo nếu không tìm được.
+Không nên làm MVP
+AI/ML dự đoán Driver.
+Dynamic dispatch quá phức tạp.
+Thuật toán tối ưu hàng triệu Driver.
+Driver bidding.
+Multi-driver assignment phức tạp.
+
+Có thể thiết kế architecture để sau này mở rộng, nhưng MVP nên dùng rule-based dispatch.
+
+7. Quản lý chuyến đi
+MVP
+
+Trip State Machine:
+
+REQUESTED
+    ↓
+SEARCHING_DRIVER
+    ↓
+DRIVER_ASSIGNED
+    ↓
+DRIVER_ARRIVING
+    ↓
+DRIVER_ARRIVED
+    ↓
+PASSENGER_PICKED_UP
+    ↓
+IN_PROGRESS
+    ↓
+COMPLETED
+
+Các trạng thái kết thúc:
+
+CANCELLED
+NO_DRIVER_FOUND
+FAILED
+
+Cần xác định rõ ai có quyền thay đổi từng trạng thái.
+
+8. Tính cước
+Nên làm
+
+Hệ thống phải có một pricing engine cơ bản:
+
+Fare
+ =
+Base Fare
++ Distance Fee
++ Time Fee
++ Surcharge
+- Discount
+
+Nhưng công thức thực tế chưa được chốt, vì vậy BA cần xác nhận với Business trước khi development.
+
+Không nên làm MVP
+Dynamic pricing phức tạp.
+Pricing theo AI.
+Hàng chục loại promotion.
+Pricing engine quá phức tạp nếu Business chưa có policy.
+9. Thanh toán
+Nên làm
+
+Hỗ trợ:
+
+                Payment
+                   │
+          ┌────────┴────────┐
+          ↓                 ↓
+       Cash              Online
+                            ↓
+                   Payment Provider
+
+Online payment cần:
+
+tạo payment request;
+nhận kết quả;
+success/failure;
+retry theo policy;
+lưu transaction/reference ID.
+
+Không lưu trực tiếp thông tin nhạy cảm của thẻ/tài khoản thanh toán.
+
+Không nên làm MVP
+Tích hợp nhiều Payment Provider cùng lúc.
+Ví điện tử nội bộ.
+Subscription.
+Buy Now Pay Later.
+Loyalty payment.
+
+Nên thiết kế Payment Adapter/Interface để sau này có thể thêm provider mới.
+
+10. Notification
+Nên làm
+
+Các event quan trọng:
+
+Event	Customer	Driver
+Booking created	✅	
+Driver assigned	✅	
+New booking		✅
+Driver arrived	✅	
+Trip completed	✅	
+Payment result	✅	
+Trip cancelled	✅	✅
+Không nên làm MVP
+
+Không cần triển khai ngay quá nhiều channel.
+
+Có thể bắt đầu:
+
+Push Notification
+
+và thiết kế abstraction để sau này thêm:
+
+SMS;
+Email;
+WhatsApp/Zalo hoặc channel khác.
+11. Quản trị và vận hành
+Nên làm
+
+Operation Dashboard cần cho phép:
+
+xem Customer;
+xem Driver;
+xem Vehicle;
+xem Trip;
+xem Trip đang diễn ra;
+xem trạng thái Driver;
+hỗ trợ Trip lỗi;
+tra cứu transaction;
+phân quyền;
+xem audit log.
+Không nên làm MVP
+BI dashboard quá phức tạp.
+AI analytics.
+Forecasting.
+Advanced workforce planning.
+12. Báo cáo
+MVP nên có báo cáo cơ bản
+Tổng số chuyến.
+Số chuyến hoàn thành.
+Số chuyến hủy.
+Doanh thu.
+Tỷ lệ hoàn thành.
+Tỷ lệ hủy.
+Số chuyến/Driver.
+Để phase sau
+Driver heatmap.
+Revenue forecasting.
+Customer segmentation.
+Predictive analytics.
+AI recommendation.
+13. Những gì nên làm và không nên làm
+✅ NÊN LÀM trong 7 tuần
+ Customer Management
+ Driver Management
+ Vehicle Management
+ Booking
+ Driver Dispatch
+ Trip Management
+ Driver Location
+ Fare Calculation cơ bản
+ Cash Payment
+ Một Online Payment Provider
+ Notification cơ bản
+ Trip History
+ Rating
+ Operation Dashboard cơ bản
+ Authentication
+ Role/Permission
+ Audit Log cơ bản
+ Báo cáo cơ bản
+❌ KHÔNG NÊN LÀM trong MVP
+ Loyalty/Membership
+ Voucher/Promotion nâng cao
+ Corporate Account
+ Ride Sharing
+ Delivery
+ Rental
+ AI Driver Matching
+ Advanced Analytics
+ Nhiều Payment Provider
+ Nhiều Notification Provider
+ Dynamic Pricing phức tạp
+ Multi-country
+ Multi-currency
+ Các tính năng chưa có Business Rule rõ ràng
+14. MVP Scope đề xuất
+
+Có thể đóng phạm vi MVP thành 8 nhóm chính:
+
+flowchart TB
+    CAB["CAB System - MVP"]
+
+
+    CAB --> A["1. Customer"]
+    CAB --> B["2. Driver & Vehicle"]
+    CAB --> C["3. Booking & Trip"]
+    CAB --> D["4. Driver Dispatch"]
+    CAB --> E["5. Fare & Payment"]
+    CAB --> F["6. Notification"]
+    CAB --> G["7. Operation & Admin"]
+    CAB --> H["8. Reporting & Audit"]
+
+
+    A --> A1["Register / Login"]
+    A --> A2["Profile"]
+    A --> A3["Booking History"]
+    A --> A4["Rating"]
+
+
+    B --> B1["Driver Profile"]
+    B --> B2["Vehicle"]
+    B --> B3["Online / Available"]
+    B --> B4["Location"]
+
+
+    C --> C1["Create Booking"]
+    C --> C2["Trip Status"]
+    C --> C3["Cancel"]
+
+
+    D --> D1["Find Driver"]
+    D --> D2["Accept / Reject"]
+    D --> D3["Timeout / Retry"]
+
+
+    E --> E1["Fare"]
+    E --> E2["Cash"]
+    E --> E3["Online Payment"]
+
+
+    F --> F1["Customer Notification"]
+    F --> F2["Driver Notification"]
+
+
+    G --> G1["Manage Customer"]
+    G --> G2["Manage Driver"]
+    G --> G3["Monitor Trip"]
+    G --> G4["RBAC"]
+
+
+    H --> H1["Basic Reports"]
+    H --> H2["Audit Log"]
+15. Phạm vi không làm nhưng phải thiết kế để mở rộng
+
+Một điểm rất quan trọng trong dự án này:
+
+Không làm trong MVP ≠ không cần quan tâm về kiến trúc.
+
+Ví dụ:
+
+Payment
+
+MVP:
+
+CAB → Payment Provider A
+
+Nhưng nên thiết kế:
+
+CAB
+ │
+Payment Interface
+ │
+ ├── Provider A
+ ├── Provider B (future)
+ └── Provider C (future)
+Notification
+
+MVP:
+
+CAB → Push Provider
+
+Có thể mở rộng:
+
+Notification Service
+       │
+       ├── Push
+       ├── SMS
+       ├── Email
+       └── Other Channel
+Service
+
+MVP:
+
+CAB
+ └── Ride Service
+
+Tương lai:
+
+CAB Platform
+ ├── Ride
+ ├── Delivery
+ ├── Rental
+ └── Other Services
+
+Bước 5: Sau khi xác nhận với khách hàng rồi chuyển các yêu cầu thành business requirement, mỗi business requirement kí hiệu là BR, BR01 là gì, BR02 là gì, BR03 là gì, lập 1 bảng cột thứ 1 là mã với số thứ tự, cột thứ 2 là tên, cột thứ 3 là diễn giải ra
+Sau khi BA đã phân tích, làm rõ và xác nhận phạm vi với khách hàng, các mục tiêu kinh doanh được chuyển thành Business Requirement (BR).
+
+Ở cấp độ này, BR mô tả doanh nghiệp cần hệ thống đáp ứng điều gì, chưa đi sâu vào cách hệ thống thực hiện về mặt kỹ thuật.
+
+Mã	Tên Business Requirement	Diễn giải
+BR01	Quản lý khách hàng	Hệ thống phải cho phép doanh nghiệp quản lý thông tin khách hàng, đồng thời khách hàng có thể đăng ký, đăng nhập, cập nhật thông tin cá nhân và xem lịch sử chuyến đi.
+BR02	Quản lý tài xế	Hệ thống phải hỗ trợ quản lý tài xế, bao gồm hồ sơ, trạng thái hoạt động và thông tin phương tiện của tài xế.
+BR03	Đặt xe	Hệ thống phải cho phép khách hàng nhập điểm đón, điểm đến, lựa chọn loại xe và gửi yêu cầu đặt xe.
+BR04	Tự động tìm tài xế	Hệ thống phải tự động tìm các tài xế phù hợp dựa trên vị trí, trạng thái sẵn sàng, loại xe và các tiêu chí vận hành đã được doanh nghiệp xác định.
+BR05	Phân công tài xế	Hệ thống phải hỗ trợ tự động phân công tài xế phù hợp cho yêu cầu đặt xe và thông báo kết quả cho khách hàng.
+BR06	Xử lý tài xế từ chối hoặc không phản hồi	Khi tài xế được đề xuất không phản hồi hoặc từ chối chuyến, hệ thống phải tiếp tục tìm tài xế khác mà không yêu cầu khách hàng tạo lại yêu cầu.
+BR07	Giảm thời gian tìm tài xế	Hệ thống phải hỗ trợ rút ngắn thời gian từ khi khách hàng gửi yêu cầu đến khi chuyến được tài xế nhận, thông qua cơ chế tìm và phân công tài xế tự động.
+BR08	Theo dõi chuyến đi	Hệ thống phải cho phép khách hàng và nhân viên vận hành theo dõi trạng thái chuyến đi, thông tin tài xế và thời gian dự kiến tài xế đến.
+BR09	Quản lý trạng thái chuyến	Hệ thống phải hỗ trợ quản lý vòng đời chuyến đi từ lúc tạo yêu cầu, tìm tài xế, tài xế đến điểm đón, đón khách, thực hiện chuyến đến khi hoàn thành hoặc hủy.
+BR10	Theo dõi vị trí tài xế	Hệ thống phải lưu và sử dụng thông tin vị trí của tài xế để hỗ trợ tìm tài xế gần khách hàng và cung cấp thông tin ETA.
+BR11	Tính cước	Hệ thống phải xác định số tiền khách hàng cần thanh toán dựa trên loại dịch vụ và các thông tin của chuyến đi theo chính sách tính cước của doanh nghiệp.
+BR12	Thanh toán tiền mặt	Hệ thống phải cho phép khách hàng thanh toán chuyến đi bằng tiền mặt theo chính sách của doanh nghiệp.
+BR13	Thanh toán trực tuyến	Hệ thống phải hỗ trợ khách hàng thanh toán điện tử thông qua nhà cung cấp dịch vụ thanh toán bên ngoài.
+BR14	Xử lý thanh toán thất bại	Khi thanh toán trực tuyến thất bại, hệ thống phải thông báo cho khách hàng và hỗ trợ xử lý lại theo chính sách thanh toán của doanh nghiệp.
+BR15	Bảo vệ thông tin thanh toán	Hệ thống không được lưu trực tiếp các thông tin nhạy cảm của thẻ hoặc tài khoản thanh toán trong hệ thống CAB.
+BR16	Thông báo	Hệ thống phải cung cấp cơ chế thông báo cho khách hàng và tài xế về các sự kiện quan trọng trong quá trình đặt và thực hiện chuyến.
+BR17	Đánh giá tài xế	Sau khi chuyến hoàn thành, hệ thống phải cho phép khách hàng đánh giá tài xế.
+BR18	Quản lý vận hành	Hệ thống phải cung cấp giao diện quản trị để nhân viên vận hành quản lý khách hàng, tài xế, phương tiện và chuyến đi.
+BR19	Giám sát và xử lý sự cố	Nhân viên vận hành phải có khả năng theo dõi các chuyến đang diễn ra, kiểm tra trạng thái tài xế và hỗ trợ xử lý các trường hợp chuyến bị lỗi.
+BR20	Phân quyền người dùng	Hệ thống phải kiểm soát quyền truy cập đối với các chức năng quản trị để nhân viên chỉ thực hiện được những thao tác được cấp quyền.
+BR21	Báo cáo hoạt động	Hệ thống phải cung cấp báo cáo về số lượng chuyến, doanh thu, tỷ lệ hoàn thành, tỷ lệ hủy và hiệu quả hoạt động của tài xế.
+BR22	Lưu vết hoạt động	Hệ thống phải lưu lại các thao tác quan trọng để phục vụ kiểm tra, truy vết và xử lý sự cố.
+BR23	Khả năng mở rộng	Hệ thống phải có khả năng mở rộng để đáp ứng số lượng lớn khách hàng, tài xế và chuyến đi mà không phải thay đổi toàn bộ hệ thống.
+BR24	Khả năng mở rộng dịch vụ	Hệ thống phải cho phép doanh nghiệp bổ sung các loại dịch vụ mới trong tương lai mà hạn chế ảnh hưởng đến các chức năng hiện có.
+BR25	Khả năng mở rộng phương thức thanh toán	Hệ thống phải cho phép tích hợp thêm phương thức hoặc nhà cung cấp thanh toán mới trong tương lai.
+BR26	Khả năng mở rộng kênh thông báo	Hệ thống phải cho phép bổ sung các kênh thông báo mới mà không phải thay đổi toàn bộ hệ thống.
+BR27	Tính ổn định	Lỗi tại một thành phần như thanh toán hoặc thông báo không được làm cho toàn bộ chức năng đặt xe ngừng hoạt động.
+BR28	Bảo mật dữ liệu	Hệ thống phải bảo vệ thông tin cá nhân, thông tin phương tiện, dữ liệu vị trí và dữ liệu giao dịch của người dùng.
+Tóm tắt các BR cốt lõi
+
+Nếu cần trình bày ngắn gọn trong tài liệu BA, có thể nhóm 28 BR trên thành các nhóm chính:
+
+BR01 - BR02       → Quản lý Customer / Driver
+BR03              → Đặt xe
+BR04 - BR07       → Tìm và phân công Driver
+BR08 - BR10       → Theo dõi và quản lý Trip
+BR11 - BR15       → Fare & Payment
+BR16 - BR17       → Notification & Rating
+BR18 - BR22       → Operation / Admin / Reporting
+BR23 - BR27       → Scalability / Reliability
+BR28              → Security
+
+Điểm quan trọng: BR là yêu cầu ở góc nhìn nghiệp vụ. Ví dụ:
+
+BR04 – Tự động tìm tài xế: Doanh nghiệp cần hệ thống tự động tìm tài xế phù hợp.
+
+Sau này khi chuyển sang Functional Requirement (FR), BR04 có thể được phân rã thành các yêu cầu cụ thể hơn như:
+
+FR04.01: Hệ thống xác định các tài xế đang Available.
+FR04.02: Hệ thống lọc tài xế theo loại xe.
+FR04.03: Hệ thống xác định khoảng cách giữa tài xế và điểm đón.
+FR04.04: Hệ thống sắp xếp tài xế theo tiêu chí ưu tiên.
+FR04.05: Hệ thống gửi yêu cầu chuyến cho tài xế được chọn.
+
+Như vậy có thể tạo được chuỗi truy xuất:
+
+Business Goal → Business Requirement (BR) → Functional Requirement (FR) → Use Case → Test Case.
+
+Bước 6: xây dựng business process đặt chuyến VD: grab, khách hàng muốn đặt chuyến đầu tiên tạo chuyến đi xác nhận điểm đón, 
+điểm đến,hệ thống xác nhận, tìm tài xế, nếu tìm ra tài xế nếu tài xế chấp nhận thì đi
+nếu tài xế không chấp nhận thì thông báo cho các tài xế khác, 
+nếu chưa tìm được tài xế thì tiếp tục chờ tài xế xác nhận
+
+1. Business Process tổng quát
+
+Mục tiêu: Cho phép khách hàng tạo chuyến, hệ thống xác nhận thông tin, tự động tìm tài xế phù hợp và xử lý trường hợp tài xế từ chối/không phản hồi.
+
+Quy trình
+Khách hàng tạo yêu cầu đặt chuyến.
+Khách hàng nhập/xác nhận:
+Điểm đón.
+Điểm đến.
+Loại xe.
+Hệ thống kiểm tra và xác nhận thông tin chuyến.
+Hệ thống bắt đầu tìm tài xế phù hợp.
+Nếu chưa tìm được tài xế:
+Tiếp tục tìm kiếm.
+Khách hàng tiếp tục chờ.
+Nếu tìm được tài xế:
+Gửi yêu cầu nhận chuyến cho tài xế.
+Nếu tài xế chấp nhận:
+Hệ thống xác nhận tài xế.
+Thông báo cho khách hàng.
+Chuyến được bắt đầu.
+Nếu tài xế từ chối hoặc không phản hồi:
+Hệ thống loại tài xế đó khỏi lượt tìm hiện tại.
+Tiếp tục tìm tài xế khác.
+Nếu không còn tài xế phù hợp:
+Thông báo cho khách hàng rằng chưa tìm được tài xế.
+Chuyến chuyển sang trạng thái phù hợp theo business rule.
+2. Business Process dạng Flowchart
+flowchart TD
+    A([Bắt đầu]) --> B["Khách hàng tạo yêu cầu đặt chuyến"]
+
+
+    B --> C["Nhập / xác nhận điểm đón"]
+    C --> D["Nhập / xác nhận điểm đến"]
+    D --> E["Chọn loại xe"]
+
+
+    E --> F["Hệ thống kiểm tra thông tin chuyến"]
+
+
+    F --> G{"Thông tin hợp lệ?"}
+
+
+    G -- "Không" --> H["Thông báo lỗi và yêu cầu khách hàng chỉnh sửa"]
+    H --> C
+
+
+    G -- "Có" --> I["Tạo chuyến / Booking"]
+    I --> J["Hệ thống tìm tài xế phù hợp"]
+
+
+    J --> K{"Tìm được tài xế?"}
+
+
+    K -- "Chưa tìm được" --> L["Tiếp tục tìm kiếm"]
+    L --> M["Khách hàng tiếp tục chờ"]
+    M --> J
+
+
+    K -- "Có" --> N["Gửi yêu cầu nhận chuyến cho tài xế"]
+
+
+    N --> O{"Tài xế chấp nhận?"}
+
+
+    O -- "Có" --> P["Xác nhận tài xế"]
+    P --> Q["Thông báo tài xế cho khách hàng"]
+    Q --> R["Chuyến được xác nhận"]
+    R --> S([Tiếp tục thực hiện chuyến])
+
+
+    O -- "Không / Từ chối" --> T["Thông báo / chuyển sang tài xế khác"]
+    T --> J
+3. Business Process chi tiết theo Actor
+Bước	Customer	CAB System	Driver
+1	Tạo yêu cầu đặt chuyến		
+2	Nhập điểm đón		
+3	Nhập điểm đến		
+4	Chọn loại xe		
+5	Xác nhận đặt chuyến	Kiểm tra thông tin	
+6	Chờ	Tạo Booking	
+7	Chờ	Tìm Driver phù hợp	
+8	Chờ	Chọn Driver	
+9	Chờ	Gửi yêu cầu	Nhận thông báo chuyến
+10	Chờ	Chờ phản hồi	Accept / Reject
+11A	Nhận thông báo	Xác nhận Driver	Nhận chuyến
+11B	Chờ	Nếu Reject/Timeout → tìm Driver khác	
+12	Theo dõi Driver	Cập nhật trạng thái	Bắt đầu đến điểm đón
+4. Các nhánh xử lý quan trọng
+Trường hợp 1 – Tìm được tài xế và tài xế chấp nhận
+Customer tạo chuyến
+        ↓
+CAB tìm Driver
+        ↓
+Tìm thấy Driver
+        ↓
+Gửi yêu cầu
+        ↓
+Driver ACCEPT
+        ↓
+CAB xác nhận Driver
+        ↓
+Thông báo Customer
+        ↓
+Bắt đầu chuyến
+Trường hợp 2 – Tài xế từ chối
+CAB tìm Driver A
+        ↓
+Gửi yêu cầu
+        ↓
+Driver A REJECT
+        ↓
+CAB tìm Driver B
+        ↓
+Gửi yêu cầu
+        ↓
+Driver B ACCEPT
+        ↓
+Xác nhận chuyến
+
+Điểm quan trọng là Customer không phải tạo lại chuyến.
+
+Trường hợp 3 – Tài xế không phản hồi
+CAB gửi request
+       ↓
+Chờ Driver phản hồi
+       ↓
+Timeout
+       ↓
+Driver bị xem là không phản hồi
+       ↓
+Tìm Driver khác
+Trường hợp 4 – Chưa tìm được tài xế
+Customer tạo chuyến
+       ↓
+CAB tìm Driver
+       ↓
+Chưa có Driver phù hợp
+       ↓
+Tiếp tục tìm
+       ↓
+Customer tiếp tục chờ
+       ↓
+Tìm được Driver?
+    ↙        ↘
+  Chưa        Có
+   ↓           ↓
+Tiếp tục     Gửi request
+
+Cần bổ sung một Business Rule quan trọng: Không nên để trạng thái "tiếp tục chờ" vô hạn. BA cần xác nhận với khách hàng thời gian tối đa tìm tài xế. Ví dụ nếu sau X phút không có tài xế thì hệ thống phải thông báo "Không tìm được tài xế" và kết thúc/hủy yêu cầu.
+
+5. Trạng thái của Booking trong Business Process
+
+Có thể sử dụng state flow sau:
+
+stateDiagram-v2
+    [*] --> REQUESTED
+
+
+    REQUESTED --> SEARCHING_DRIVER: Xác nhận thông tin
+
+
+    SEARCHING_DRIVER --> DRIVER_FOUND: Tìm thấy Driver
+    SEARCHING_DRIVER --> NO_DRIVER_FOUND: Hết thời gian tìm
+
+
+    DRIVER_FOUND --> WAITING_DRIVER_RESPONSE: Gửi request
+
+
+    WAITING_DRIVER_RESPONSE --> DRIVER_ASSIGNED: Driver Accept
+    WAITING_DRIVER_RESPONSE --> SEARCHING_DRIVER: Driver Reject
+    WAITING_DRIVER_RESPONSE --> SEARCHING_DRIVER: Driver Timeout
+
+
+    DRIVER_ASSIGNED --> DRIVER_ARRIVING
+
+
+    NO_DRIVER_FOUND --> [*]
+
+Bước 7: 
