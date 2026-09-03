@@ -1,0 +1,32 @@
+openapi: 3.0.3
+info:
+  title: CAB System - Executive Leadership API
+  description: Các API thống kê báo cáo phục vụ Ban Lãnh đạo đánh giá hiệu quả kinh doanh.
+  version: 1.0.0
+servers:
+  - url: https://api.cab-system.com/v1/leadership-portal
+paths:
+  /reports/dashboard:
+    get:
+      summary: UC15 / BR15 - Xem báo cáo chỉ số kinh doanh tổng quan
+      operationId: getLeadershipDashboard
+      responses:
+        '200':
+          description: Trả về số liệu thống kê kinh doanh
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_trips:
+                    type: integer
+                    example: 5000
+                  completed_trips:
+                    type: integer
+                    example: 4600
+                  total_revenue_vnd:
+                    type: number
+                    example: 650000000
+                  active_drivers_count:
+                    type: integer
+                    example: 120
