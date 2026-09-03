@@ -1,0 +1,26 @@
+openapi: 3.0.3
+info:
+  title: CAB System - Admin Portal API
+  description: Cổng Quản trị viên (Admin) dành cho phân quyền, bảo mật và tra cứu Audit Log.
+  version: 1.0.0
+servers:
+  - url: https://api.cab-system.com/v1/admin-portal
+paths:
+  /audit-logs:
+    get:
+      summary: UC14 / BR17 - Tra cứu nhật ký thao tác hệ thống (Audit Log)
+      operationId: getAuditLogs
+      parameters:
+        - name: user_id
+          in: query
+          schema:
+            type: integer
+          example: 901
+        - name: action
+          in: query
+          schema:
+            type: string
+          example: "CANCEL_TRIP"
+      responses:
+        '200':
+          description: Lấy danh sách nhật ký thành công
