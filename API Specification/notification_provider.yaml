@@ -1,0 +1,40 @@
+openapi: 3.0.3
+info:
+  title: CAB System - Notification Provider API
+  description: Cổng tích hợp dịch vụ gửi SMS / Email / App Push Notification qua bên thứ ba.
+  version: 1.0.0
+servers:
+  - url: https://api.cab-system.com/v1/notification-provider
+paths:
+  /notifications/send:
+    post:
+      summary: UC11 / BR11 - Gửi thông báo đến tài xế / khách hàng
+      operationId: sendNotification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [recipient_id, recipient_type, channel, title, content]
+              properties:
+                recipient_id:
+                  type: integer
+                  example: 101
+                recipient_type:
+                  type: string
+                  enum: [CUSTOMER, DRIVER]
+                  example: CUSTOMER
+                channel:
+                  type: string
+                  enum: [PUSH, SMS, EMAIL]
+                  example: PUSH
+                title:
+                  type: string
+                  example: "Tài xế đang đến!"
+                content:
+                  type: string
+                  example: "Tài xế Trần Văn B đang trên đường đến điểm đón bạn."
+      responses:
+        '200':
+          description: Đã gửi thông báo thành công
