@@ -1,1 +1,124 @@
+openapi: 3.0.3
+info:
+  title: CAB System - Customer Portal API
+  description: Các API dành riêng cho ứng dụng / giao diện Khách hàng (Customer App).
+  version: 1.0.0
+servers:
+  - url: https://api.cab-system.com/v1/customer-portal
+paths:
+  /register:
+    post:
+      summary: UC01 / BR02 - Khách hàng đăng ký tài khoản
+      operationId: registerCustomer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [full_name, phone_number]
+              properties:
+                full_name:
+                  type: string
+                  example: "Nguyễn Văn A"
+                phone_number:
+                  type: string
+                  example: "0901234567"
+                email:
+                  type: string
+                  example: "nguyenvana@gmail.com"
+      responses:
+        '201':
+          description: Đăng ký tài khoản thành công
 
+  /profile/{customer_id}:
+    get:
+      summary: UC01 / BR02 - Xem thông tin cá nhân
+      operationId: getCustomerProfile
+      parameters:
+        - name: customer_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 101
+      responses:
+        '200':
+          description: Thành công
+
+  /trips:
+    post:
+      summary: UC04 / BR01 - Đặt chuyến đi mới
+      operationId: createTrip
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [customer_id, pickup_address, destination_address, vehicle_type]
+              properties:
+                customer_id:
+                  type: integer
+                  example: 101
+                pickup_address:
+                  type: string
+                  example: "123 Lê Lợi, Quận 1, TP.HCM"
+                destination_address:
+                  type: string
+                  example: "456 Nguyễn Huệ, Quận 1, TP.HCM"
+                vehicle_type:
+                  type: string
+                  example: "4-seater"
+                payment_method:
+                  type: string
+                  enum: [CASH, WALLET, CARD]
+                  example: WALLET
+      responses:
+        '201':
+          description: Đặt chuyến thành công
+
+  /trips/{trip_id}:
+    get:
+      summary: UC07 / BR06 - Theo dõi trạng thái chuyến đi
+      operationId: getTripStatus
+      parameters:
+        - name: trip_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 5001
+      responses:
+        '200':
+          description: Lấy thông tin chuyến đi thành công
+
+  /ratings:
+    post:
+      summary: UC12 / BR12 - Gửi đánh giá tài xế và chuyến đi
+      operationId: rateTrip
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [trip_id, customer_id, score]
+              properties:
+                trip_id:
+                  type: integer
+                  example: 5001
+                customer_id:
+                  type: integer
+                  example: 101
+                score:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                  example: 5
+                comment:
+                  type: string
+                  example: "Tài xế thân thiện, xe sạch"
+      responses:
+        '201':
+          description: Đánh giá thành công
