@@ -1,0 +1,50 @@
+openapi: 3.0.3
+info:
+  title: CAB System - Operator Portal API
+  description: Cổng làm việc cho Nhân viên Vận hành (Operator / Support Team).
+  version: 1.0.0
+servers:
+  - url: https://api.cab-system.com/v1/operator-portal
+paths:
+  /trips:
+    get:
+      summary: UC07 / BR13 - Xem danh sách toàn bộ chuyến đi đang diễn ra
+      operationId: listActiveTrips
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+          example: "SEARCHING"
+      responses:
+        '200':
+          description: Lấy danh sách chuyến đi thành công
+
+  /trips/{trip_id}/cancel:
+    post:
+      summary: UC13, UC14 / BR14 - Can thiệp hủy chuyến lỗi thủ công
+      operationId: forceCancelTrip
+      parameters:
+        - name: trip_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 5001
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [operator_id, reason]
+              properties:
+                operator_id:
+                  type: integer
+                  example: 901
+                reason:
+                  type: string
+                  example: "Tài xế hư xe giữa đường, cần hủy để tìm xe khác"
+      responses:
+        '200':
+          description: Hủy chuyến thành công
