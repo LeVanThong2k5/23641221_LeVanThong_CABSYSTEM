@@ -1,1 +1,84 @@
+openapi: 3.0.3
+info:
+  title: CAB System - Driver Portal API
+  description: Các API dành riêng cho ứng dụng Tài xế (Driver App).
+  version: 1.0.0
+servers:
+  - url: https://api.cab-system.com/v1/driver-portal
+paths:
+  /status:
+    put:
+      summary: UC03 / BR03 - Cập nhật trạng thái sẵn sàng (AVAILABLE / OFFLINE)
+      operationId: updateStatus
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [driver_id, status]
+              properties:
+                driver_id:
+                  type: integer
+                  example: 201
+                status:
+                  type: string
+                  enum: [AVAILABLE, BUSY, OFFLINE]
+                  example: AVAILABLE
+      responses:
+        '200':
+          description: Cập nhật thành công
 
+  /location:
+    post:
+      summary: UC08 / BR07 - Gửi vị trí GPS định kỳ
+      operationId: updateLocation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [driver_id, latitude, longitude]
+              properties:
+                driver_id:
+                  type: integer
+                  example: 201
+                latitude:
+                  type: number
+                  example: 10.7769
+                longitude:
+                  type: number
+                  example: 106.7009
+      responses:
+        '200':
+          description: Ghi nhận vị trí GPS thành công
+
+  /trips/{trip_id}/respond:
+    post:
+      summary: UC06 / BR05 - Chấp nhận hoặc từ chối yêu cầu chuyến đi
+      operationId: respondToTrip
+      parameters:
+        - name: trip_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 5001
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [driver_id, accepted]
+              properties:
+                driver_id:
+                  type: integer
+                  example: 201
+                accepted:
+                  type: boolean
+                  example: true
+      responses:
+        '200':
+          description: Phản hồi thành công
