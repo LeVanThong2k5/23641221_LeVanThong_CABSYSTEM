@@ -1,0 +1,36 @@
+openapi: 3.0.3
+info:
+  title: CAB System - Payment Provider Integration API
+  description: Cổng tích hợp webhook và xử lý thanh toán với đối tác thứ 3 (Ví/Thẻ/Ngân hàng).
+  version: 1.0.0
+servers:
+  - url: https://api.cab-system.com/v1/payment-provider
+paths:
+  /webhook/callback:
+    post:
+      summary: UC10 / BR09, BR10 - Tiếp nhận callback phản hồi kết quả thanh toán
+      operationId: handlePaymentCallback
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [partner_transaction_id, trip_id, status, amount]
+              properties:
+                partner_transaction_id:
+                  type: string
+                  example: "MOMO_20260903_998877"
+                trip_id:
+                  type: integer
+                  example: 5001
+                amount:
+                  type: number
+                  example: 65000
+                status:
+                  type: string
+                  enum: [SUCCESS, FAILED]
+                  example: SUCCESS
+      responses:
+        '200':
+          description: Xác nhận đã ghi nhận kết quả thanh toán
