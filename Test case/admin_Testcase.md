@@ -1,10 +1,6 @@
 # Admin API - Test Cases
 
-**Source:** `API Specification/admin.yaml`
-
-**Base URL:** `https://api.cab-system.com/v1/admin-portal`
-
-## Test Cases
+## Test Cases - Admin
 
 | Test Case ID | Test Scenario | Test Case | Preconditions | Test Steps | Test Data | Expected Result | Priority |
 |---|---|---|---|---|---|---|---|
